@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:habitat54/core/common/app_colors.dart';
+import 'package:habitat54/features/auth/screens/forgot_password_screen.dart';
+import 'package:habitat54/features/auth/screens/login_screen.dart';
 import 'package:habitat54/features/auth/screens/splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:habitat54/features/dashboard/dashboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,10 +15,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Habitat54',
-      home: SplashScreen(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.white,
+        appBarTheme: const AppBarTheme(
+          color: AppColors.white,
+        ),
+      ),
+      // home: SplashScreen(),
+      home: const DashBoard(),
     );
   }
 }

@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
-import 'package:habitat54/core/constants/app_constants.dart';
-import 'package:habitat54/features/auth/screens/login_screen.dart';
+import 'package:habitat54/features/auth/screens/forgot_password_screen.dart';
+import 'package:habitat54/features/auth/screens/signup_screen.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
-import 'package:habitat54/features/auth/widgets/sociel_button.dart';
 import 'package:habitat54/features/dashboard/dashboard.dart';
 
-class SignupScreen extends StatelessWidget {
-  SignupScreen({super.key});
-  final nameFormKey = GlobalKey<FormState>();
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
   final emailFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
 
@@ -22,7 +20,6 @@ class SignupScreen extends StatelessWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        appBar: AppBar(),
         backgroundColor: AppColors.authBackground,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -33,21 +30,12 @@ class SignupScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Sign Up',
+                  'Login',
                   style: AppTextStyle.boldBlack30
                       .copyWith(fontSize: 36, fontWeight: FontWeight.w900),
                 ),
                 Column(
                   children: [
-                    AuthTextField(
-                      // controller: authC.signupnNmeC,
-                      formKey: nameFormKey,
-                      text: 'Name', leadingIcon: Icons.person_outline,
-                      // validator: (value) {
-                      //   String? error = authC.nameValidator(value);
-                      //   return error;
-                      // },
-                    ),
                     AuthTextField(
                       // controller: authC.signupEmailC,
                       text: 'Email',
@@ -90,13 +78,29 @@ class SignupScreen extends StatelessWidget {
                     //     },
                     //   ),
                     // ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => ForgetPasswordScreen());
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: AppTextStyle.mediumBlack14
+                                .copyWith(color: AppColors.primary),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
                 Column(
                   children: [
                     const SizedBox(height: 15),
                     LongButton(
-                      text: 'Sign up',
+                      text: 'Login',
                       onPressed: () {
                         // if (nameFormKey.currentState!.validate()) {}
                         // if (emailFormKey.currentState!.validate()) {}
@@ -108,12 +112,12 @@ class SignupScreen extends StatelessWidget {
                     LongButton(
                       textColor: AppColors.black,
                       color: const Color(0xfff4f4f4),
-                      text: 'Login',
+                      text: 'Sign up',
                       onPressed: () {
                         // if (nameFormKey.currentState!.validate()) {}
                         // if (emailFormKey.currentState!.validate()) {}
                         // if (passwordFormKey.currentState!.validate()) {}
-                        Get.to(() => LoginScreen());
+                        Get.to(() => SignupScreen());
                       },
                     ),
                   ],
