@@ -22,17 +22,17 @@ class DashboardNavItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
             icon,
-            height: size ?? 25,
+            height: size ?? 21,
             color: isActive ? AppColors.primary : AppColors.grey,
           ),
-          const SizedBox(height: 3),
+          const SizedBox(height: 5),
           Text(
             text,
-            style: AppTextStyle.regularBlack16.copyWith(
+            style: AppTextStyle.regularBlack14.copyWith(
               color: isActive ? AppColors.primary : AppColors.grey,
             ),
           )

@@ -104,7 +104,7 @@ class ProfileListTile extends StatelessWidget {
             ),
           ],
         ),
-        Icon(
+        const Icon(
           Icons.arrow_forward_ios,
           color: AppColors.grey,
           size: 22,

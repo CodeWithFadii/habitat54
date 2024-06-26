@@ -5,6 +5,8 @@ import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/features/dashboard/dashboard_navitem.dart';
 import 'package:habitat54/features/home/screens/home_screen.dart';
 import 'package:habitat54/features/profile/screens/guest_screen.dart';
+import 'package:habitat54/features/profile/screens/profile_screen.dart';
+import 'package:habitat54/features/property/screens/properties_screen.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -16,10 +18,11 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int index = 0;
   List pages = [
-    const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
-    const GuestScreen(),
+    HomeScreen(),
+    PropertiesScreen(),
+    HomeScreen(),
+    //  GuestScreen(),
+    ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class _DashBoardState extends State<DashBoard> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         width: width,
-        height: 75,
+        height: 70,
         decoration: BoxDecoration(
           color: AppColors.white,
           boxShadow: [

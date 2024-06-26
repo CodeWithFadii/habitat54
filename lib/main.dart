@@ -19,9 +19,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Habitat54',
       theme: ThemeData(
+        
         scaffoldBackgroundColor: AppColors.white,
         appBarTheme: const AppBarTheme(
           color: AppColors.white,
+          
         ),
       ),
       // home: SplashScreen(),
