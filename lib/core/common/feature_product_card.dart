@@ -19,6 +19,7 @@ class FeatureProductCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(left: 18),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
           color: AppColors.lightGrey,
         ),
         width: 210,

@@ -7,6 +7,7 @@ import 'package:habitat54/features/home/screens/home_screen.dart';
 import 'package:habitat54/features/profile/screens/guest_screen.dart';
 import 'package:habitat54/features/profile/screens/profile_screen.dart';
 import 'package:habitat54/features/property/screens/properties_screen.dart';
+import 'package:habitat54/features/sell/screens/sell_screen.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -20,8 +21,7 @@ class _DashBoardState extends State<DashBoard> {
   List pages = [
     HomeScreen(),
     PropertiesScreen(),
-    HomeScreen(),
-    //  GuestScreen(),
+    SellScreen(),
     ProfileScreen()
   ];
   @override

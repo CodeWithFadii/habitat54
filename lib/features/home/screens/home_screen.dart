@@ -6,14 +6,12 @@ import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/feature_product_card.dart';
 import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/core/common/property_card.dart';
+import 'package:habitat54/features/home/widgets/home_crousel.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
   final exampleImage =
       'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
-
-  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,120 +25,239 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 380,
-                child: PageView.builder(
-                  itemCount: 5,
-                  controller: _pageController,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        CachedNetworkImage(
-                          width: double.infinity,
-                          height: 380,
-                          imageUrl: exampleImage,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Loader(),
-                          errorWidget: (context, url, error) => const SizedBox(
-                            width: double.infinity,
-                            child: Icon(
-                              Icons.error,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin:
-                              EdgeInsets.only(bottom: 20, left: 40, right: 40),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-                          alignment: Alignment.center,
-                          height: 80,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              color: AppColors.white),
-                          child: Text(
-                            '2 bedroom apartment for sale in downtown dubai'
-                                .toUpperCase(),
-                            textAlign: TextAlign.center,
-                            maxLines: 3,
-                            style: AppTextStyle.boldBlack18
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      _pageController.previousPage(
-                                          duration: Duration(milliseconds: 500),
-                                          curve: Curves.easeIn);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(7),
-                                      decoration: BoxDecoration(
-                                          color:
-                                              AppColors.white.withOpacity(0.6)),
-                                      child: Icon(Icons.arrow_back_ios),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      _pageController.nextPage(
-                                          duration: Duration(milliseconds: 500),
-                                          curve: Curves.easeIn);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(7),
-                                      decoration: BoxDecoration(
-                                          color:
-                                              AppColors.white.withOpacity(0.6)),
-                                      child: Icon(Icons.arrow_forward_ios),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
+              HomeCrousel(),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Property Type',
+                  style: AppTextStyle.boldBlack18,
                 ),
               ),
-              const SizedBox(height: 20),
-              Column(
-                children: [
-                  Text(
-                    'Property Type',
-                    style: AppTextStyle.boldBlack18,
-                  )
-                ],
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration:
+                    BoxDecoration(border: Border.all(color: AppColors.black)),
+                child: DropdownButton<String>(
+                  hint: Center(
+                    child: const Text(
+                      'Property Type',
+                      style: TextStyle(
+                          color: AppColors.grey, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  style: AppTextStyle.mediumBlack16,
+                  // value: 'Property Type', // Currently selected item
+                  isExpanded:
+                      true, // Make the dropdown button expand to full width
+                  dropdownColor: Colors.white,
+
+                  onChanged: (newValue) {},
+                  underline: SizedBox(),
+
+                  items: ['Apartment', 'Villa', 'Office', 'Commercial Shop']
+                      .map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(item),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-              DropdownButton<String>(
-                
-                hint: const Text('Property Type'), // Hint text
-                // value: 'Property Type', // Currently selected item
-                isExpanded:
-                    true, // Make the dropdown button expand to full width
-                dropdownColor: Colors.white,
-                onChanged: (newValue) {},
-                items: ['Apartment', 'Villa', 'Office', 'Commercial Shop']
-                    .map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  );
-                }).toList(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Offer Type',
+                  style: AppTextStyle.boldBlack18,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration:
+                    BoxDecoration(border: Border.all(color: AppColors.black)),
+                child: DropdownButton<String>(
+                  hint: Center(
+                    child: const Text(
+                      'Offer Type',
+                      style: TextStyle(
+                          color: AppColors.grey, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  style: AppTextStyle.mediumBlack16,
+                  // value: 'Property Type', // Currently selected item
+                  isExpanded:
+                      true, // Make the dropdown button expand to full width
+                  dropdownColor: Colors.white,
+
+                  onChanged: (newValue) {},
+                  underline: SizedBox(),
+
+                  items: ['For Rent', 'For Sale'].map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(item),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Price',
+                  style: AppTextStyle.boldBlack18,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        cursorColor: AppColors.primary,
+                        onTapOutside: (event) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: 'From',
+                          hintStyle: AppTextStyle.regularBlack14.copyWith(
+                              color: AppColors.grey,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 30),
+                    Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        cursorColor: AppColors.primary,
+                        onTapOutside: (event) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: 'To',
+                          hintStyle: AppTextStyle.regularBlack14.copyWith(
+                              color: AppColors.grey,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w600),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'City',
+                  style: AppTextStyle.boldBlack18,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration:
+                    BoxDecoration(border: Border.all(color: AppColors.black)),
+                child: DropdownButton<String>(
+                  hint: Center(
+                    child: const Text(
+                      'City',
+                      style: TextStyle(
+                          color: AppColors.grey, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  style: AppTextStyle.mediumBlack16,
+                  // value: 'Property Type', // Currently selected item
+                  isExpanded:
+                      true, // Make the dropdown button expand to full width
+                  dropdownColor: Colors.white,
+
+                  onChanged: (newValue) {},
+                  underline: SizedBox(),
+
+                  items: [
+                    "Abu Dhabi",
+                    "Ajman",
+                    "Dubai",
+                    "Fujairah",
+                    "Ras Al Khaimah",
+                    "Sharjah",
+                    "Umm Al Quwain"
+                  ].map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(item),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        // Get.offAll(() => LoginScreen());
+                      },
+                      color: AppColors.white,
+                      elevation: 6,
+                      height: 38,
+                      minWidth: 100,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        children: [
+                          Text(
+                            'CLEAR',
+                            style: AppTextStyle.mediumBlack12,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    MaterialButton(
+                      onPressed: () {
+                        // Get.offAll(() => LoginScreen());
+                      },
+                      color: AppColors.primary,
+                      elevation: 0,
+                      height: 38,
+                      minWidth: 100,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Text(
+                        'APPLY',
+                        style: AppTextStyle.mediumWhite12,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -165,30 +282,6 @@ class HomeScreen extends StatelessWidget {
                   return PropertyCard(exampleImage: exampleImage);
                 },
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                color: AppColors.primary,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'FEATURED',
-                      style: AppTextStyle.boldWhite16,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 256,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return FeatureProductCard(exampleImage: exampleImage);
-                  },
-                ),
-              ),
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -201,6 +294,30 @@ class HomeScreen extends StatelessWidget {
                     'View more',
                     style: AppTextStyle.boldWhite16,
                   ),
+                ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'FEATURED',
+                      style: AppTextStyle.boldBlack16
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 256,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return FeatureProductCard(exampleImage: exampleImage);
+                  },
                 ),
               ),
             ],

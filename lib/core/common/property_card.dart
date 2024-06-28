@@ -17,24 +17,24 @@ class PropertyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(() => PropertyDetails());
-      },
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 25),
-          decoration: const BoxDecoration(color: AppColors.lightGrey),
-          // height: 180,
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  CachedNetworkImage(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 25),
+        decoration: const BoxDecoration(color: AppColors.lightGrey),
+        // height: 180,
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              alignment: Alignment.topRight,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => PropertyDetails());
+                  },
+                  child: CachedNetworkImage(
                     height: 165,
                     width: double.infinity,
                     imageUrl: exampleImage,
@@ -47,52 +47,57 @@ class PropertyCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const StackSmallWidget(),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Text(
-                      '2 bedroom apartment for sale in Downtown Dubai',
-                      style: AppTextStyle.boldBlack20,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'AED 49,999',
-                          style: AppTextStyle.boldBlack16
-                              .copyWith(color: AppColors.primary),
-                        ),
-                        Wrap(
-                          children: [
-                            Text(
+                ),
+                const StackSmallWidget(),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text(
+                    '2 bedroom apartment for sale in Downtown Dubai',
+                    style: AppTextStyle.boldBlack20,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 3),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'AED 49,999',
+                        style: AppTextStyle.boldBlack16
+                            .copyWith(color: AppColors.primary),
+                      ),
+                      Wrap(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => PropertyDetails());
+                            },
+                            child: Text(
                               'DETAILS',
                               style: AppTextStyle.boldBlack14
                                   .copyWith(color: AppColors.primary),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 3),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                                color: AppColors.primary,
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 14,
+                              color: AppColors.primary,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -22,11 +22,10 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 
   bool showComment = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar:  PreferredSize(
         preferredSize: const Size.fromHeight(kTextTabBarHeight),
         child: Container(
           decoration: BoxDecoration(
@@ -46,9 +45,6 @@ class _PropertyDetailsState extends State<PropertyDetails> {
               'Apartment',
               style: AppTextStyle.boldBlack18,
             ),
-            actions: const [
-              BackButtonWidget(icon: Icons.favorite_outline),
-            ],
           ),
         ),
       ),
@@ -113,45 +109,51 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                     value2: '2',
                   ),
                   DetailTileWidget(
-                    title1: 'Property Type',
-                    value1: 'Apartment',
-                    title2: 'Offer Type',
-                    value2: 'For Sale',
+                    title1: 'Offer Type',
+                    value1: 'For Sale',
+                    title2: 'City',
+                    value2: 'Dubai',
                   ),
                   DetailTileWidget(
-                    title1: 'City',
-                    value1: 'Dubai',
-                    title2: 'Neighborhood',
-                    value2: 'Downtown Dubai',
+                    title1: 'Neighborhood',
+                    value1: 'Downtown Dubai',
+                  ),
+                  DetailTileWidget(
+                    title1: 'Property Type',
+                    value1: 'Apartment',
                   ),
                 ],
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                color: AppColors.primary,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Column(
                   children: [
-                    Text(
-                      'SELLER COMMENTS',
-                      style: AppTextStyle.boldWhite16,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'SELLER COMMENTS',
+                          style: AppTextStyle.boldBlack16,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showComment
+                                  ? showComment = !showComment
+                                  : showComment = true;
+                            });
+                          },
+                          child: Icon(
+                            showComment
+                                ? Icons.arrow_drop_up
+                                : Icons.arrow_drop_down,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          showComment
-                              ? showComment = !showComment
-                              : showComment = true;
-                        });
-                      },
-                      child: Icon(
-                        showComment
-                            ? Icons.arrow_drop_up
-                            : Icons.arrow_drop_down,
-                        color: AppColors.white,
-                      ),
-                    ),
+                    Divider()
                   ],
                 ),
               ),
@@ -159,14 +161,14 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                 visible: showComment,
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   alignment: Alignment.topLeft,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '2 BEDROOM APARTMENT FOR SALE IN DOWNTOWN DUBAI',
-                        style: AppTextStyle.boldBlack20,
+                        style: AppTextStyle.boldBlack18,
                       ),
                       const SizedBox(height: 10),
                       const Text(
@@ -178,15 +180,19 @@ class _PropertyDetailsState extends State<PropertyDetails> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 20),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                color: AppColors.primary,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Column(
                   children: [
-                    Text(
-                      'RECOMMENDED',
-                      style: AppTextStyle.boldWhite16,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'RECOMMENDED',
+                          style: AppTextStyle.boldBlack16,
+                        ),
+                      ],
                     ),
+                    Divider()
                   ],
                 ),
               ),

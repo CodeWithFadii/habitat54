@@ -39,19 +39,7 @@ class AppBarWidget extends StatelessWidget {
             ],
           ),
           actions: [
-            showTrailing
-                ? trailing ??
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: InkWell(
-                        onTap: () {},
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        child: const Icon(Icons.manage_search,
-                            color: AppColors.primary, size: 35),
-                      ),
-                    )
-                : const SizedBox(),
+            showTrailing ? trailing ?? const SizedBox() : const SizedBox(),
           ],
         ),
       ),

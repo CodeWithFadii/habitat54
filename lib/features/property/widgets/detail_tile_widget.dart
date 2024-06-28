@@ -7,19 +7,19 @@ class DetailTileWidget extends StatelessWidget {
     super.key,
     required this.title1,
     required this.value1,
-    required this.title2,
-    required this.value2,
+    this.title2,
+    this.value2,
   });
 
   final String title1;
   final String value1;
 
-  final String title2;
-  final String value2;
+  final String? title2;
+  final String? value2;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -28,22 +28,26 @@ class DetailTileWidget extends StatelessWidget {
               Text(
                 '$title1 : ',
                 style: AppTextStyle.boldBlack16.copyWith(color: AppColors.grey),
+                overflow: TextOverflow.ellipsis,
               ),
               Text(
                 value1,
                 style: AppTextStyle.boldBlack16,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
           Wrap(
             children: [
               Text(
-                '$title2 : ',
+               title2 == null? '': '$title2 : ',
                 style: AppTextStyle.boldBlack16.copyWith(color: AppColors.grey),
+                overflow: TextOverflow.ellipsis,
               ),
               Text(
-                value2,
+                value2 ?? '',
                 style: AppTextStyle.boldBlack16,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           )

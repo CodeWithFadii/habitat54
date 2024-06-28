@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 
-AlertDialog alertDialog() {
+Widget alertDialog() {
   return AlertDialog(
     backgroundColor: AppColors.white,
     shape: const RoundedRectangleBorder(),
@@ -11,7 +11,7 @@ AlertDialog alertDialog() {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'You need to login again\nif you logout now!',
+          'Are you sure to quit ?',
           style: AppTextStyle.boldBlack16,
           textAlign: TextAlign.center,
         ),
@@ -46,7 +46,7 @@ AlertDialog alertDialog() {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               child: Text(
-                'Logout',
+                'Ok',
                 style: AppTextStyle.mediumWhite12,
               ),
             ),

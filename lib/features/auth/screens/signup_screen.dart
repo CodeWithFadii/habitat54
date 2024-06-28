@@ -90,6 +90,36 @@ class SignupScreen extends StatelessWidget {
                     //     },
                     //   ),
                     // ),
+                    Container(
+                      padding: EdgeInsets.only(left: 40, top: 20, bottom: 10),
+                      child: DropdownButton<String>(
+                        hint: const Text(
+                          'Agent',
+                          style: TextStyle(color: AppColors.grey),
+                        ),
+                        style: AppTextStyle.mediumBlack16,
+                        // value: 'Property Type', // Currently selected item
+                        isExpanded:
+                            true, // Make the dropdown button expand to full width
+                        dropdownColor: Colors.white,
+                        underline: Divider(
+                          height: 1,
+                          color: AppColors.grey,
+                        ),
+
+                        onChanged: (newValue) {},
+
+                        items: ['Agent', 'Agency', 'Buyer'].map((String item) {
+                          return DropdownMenuItem<String>(
+                            value: item,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Text(item),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ],
                 ),
                 Column(

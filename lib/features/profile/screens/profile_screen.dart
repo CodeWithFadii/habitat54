@@ -7,6 +7,7 @@ import 'package:habitat54/core/common/back_button_widget.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/features/profile/screens/edit_profile_screen.dart';
+import 'package:habitat54/features/profile/screens/myproperties.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -17,6 +18,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(90),
         child: AppBarWidget(
+          showTrailing: true,
           trailing: GestureDetector(
             onTap: () {
               showDialog(
@@ -24,15 +26,24 @@ class ProfileScreen extends StatelessWidget {
                 builder: (context) => alertDialog(),
               );
             },
-            child: BackButtonWidget(
-              icon: Icons.logout_outlined,
+            child: Container(
+              margin: EdgeInsets.only(right: 20),
+              padding: EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.grey),
+              ),
+              child: Icon(
+                Icons.logout_outlined,
+                color: AppColors.grey,
+              ),
             ),
           ),
         ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -43,24 +54,9 @@ class ProfileScreen extends StatelessWidget {
                 radius: 30,
               ),
               SizedBox(height: 12),
-              Wrap(
-                spacing: 10,
-                children: [
-                  Text(
-                    'Fahad Ali'.toLowerCase(),
-                    style: AppTextStyle.boldBlack14,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() =>  EditProfileScreen());
-                    },
-                    child: Icon(
-                      Icons.edit,
-                      size: 18,
-                      color: AppColors.primary,
-                    ),
-                  )
-                ],
+              Text(
+                'Fahad Ali'.toLowerCase(),
+                style: AppTextStyle.boldBlack14,
               ),
               SizedBox(height: 15),
               Row(
@@ -119,21 +115,62 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-              Text(
-                'My Properties',
-                style: AppTextStyle.boldBlack18,
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 5,
+                ),
+                child: ListTile(
+                  minLeadingWidth: 1,
+                  minTileHeight: 30,
+                  leading: Icon(
+                    Icons.edit,
+                    size: 18,
+                    color: AppColors.black,
+                  ),
+                  title: Text(
+                    'Edit Profile',
+                    style: AppTextStyle.boldBlack16,
+                  ),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      Get.to(() => EditProfileScreen());
+                    },
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: AppColors.black,
+                      size: 18,
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(height: 12),
-              Divider(),
-              SizedBox(height: 12),
-              SizedBox(height: 22),
-              Text(
-                'My Favourites',
-                style: AppTextStyle.boldBlack18,
-              ),
-              SizedBox(height: 12),
-              Divider(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                child: ListTile(
+                  minTileHeight: 30,
+                  minLeadingWidth: 1,
+                  leading: Icon(
+                    Icons.home,
+                    size: 20,
+                    color: AppColors.black,
+                  ),
+                  title: Text(
+                    'My Properties',
+                    style: AppTextStyle.boldBlack16,
+                  ),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      Get.to(() => Myproperties());
+                    },
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: AppColors.black,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
