@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
+import 'package:habitat54/features/auth/controllers/auth_controller.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({super.key});
+
+  final authC = Get.find<AuthController>();
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class ForgetPasswordScreen extends StatelessWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        backgroundColor: AppColors.authBackground,
+        backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           toolbarHeight: 70,
@@ -44,19 +47,18 @@ class ForgetPasswordScreen extends StatelessWidget {
                       AuthTextField(
                         leadingIcon: Icons.email_outlined,
                         formKey: formKey,
-                        // validator: (value) {
-                        //   String? error = authC.emailValidator(value);
-                        //   return error;
-                        // },
+                        validator: (value) {
+                          String? error = authC.emailValidator(value);
+                          return error;
+                        },
                         text: 'Email',
-                        // controller: authC.forgetPasswordC,
+                        controller: authC.forgetPasswordC,
                       ),
                       const SizedBox(height: 55),
                       LongButton(
                         text: 'SEND',
                         onPressed: () {
-                          // if (formKey.currentState!.validate()) {}
-                          // Get.offAll(() => const DashBoard());
+                          if (formKey.currentState!.validate()) {}
                         },
                       ),
                     ],

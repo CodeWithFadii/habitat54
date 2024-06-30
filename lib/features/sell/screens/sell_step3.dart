@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/features/sell/controllers/sell_controller.dart';
@@ -8,6 +9,7 @@ import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
 class SellStep3 extends StatelessWidget {
   const SellStep3({super.key, required this.sellC});
   final SellController sellC;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +66,9 @@ class SellStep3 extends StatelessWidget {
                 isExpanded:
                     true, // Make the dropdown button expand to full width
                 dropdownColor: Colors.white,
-                onChanged: (newValue) {},
+                onChanged: (feature) {
+                  sellC.addAdditionalFeature(feature!);
+                },
                 underline: SizedBox(),
                 items: [
                   "Balcony",
@@ -84,51 +88,56 @@ class SellStep3 extends StatelessWidget {
                 }).toList(),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 8.0, // Adjust spacing between chips
-                runSpacing: 2.0, // Adjust spacing between lines
-                children: [
-                  "Balcony",
-                  "Basement Parking",
-                  "Built-in Wardrobes",
-                  "Furnished",
-                  "Gym",
-                  "Kids Play Area"
-                ].map(
-                  (e) {
-                    return Chip(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: AppColors.primary),
-                      ),
-                      backgroundColor: AppColors.primary,
-                      label: Text(
-                        e,
-                        style: TextStyle(color: AppColors.white),
-                      ),
-                      deleteIcon: Icon(
-                        Icons.clear,
-                        size: 16,
-                        color: AppColors.white,
-                      ),
-                      onDeleted: () {
-                        // Handle chip deletion here
-                      },
-                    );
-                  },
-                ).toList(),
+            Obx(
+              () => Padding(
+                padding: sellC.additionalFeaturesList.isNotEmpty
+                    ? EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                    : EdgeInsets.all(0),
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 8.0, // Adjust spacing between chips
+                  runSpacing: 2.0, // Adjust spacing between lines
+                  children: sellC.additionalFeaturesList.map(
+                    (e) {
+                      return Chip(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: AppColors.primary),
+                        ),
+                        backgroundColor: AppColors.primary,
+                        label: Text(
+                          e,
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                        deleteIcon: Icon(
+                          Icons.clear,
+                          size: 16,
+                          color: AppColors.white,
+                        ),
+                        onDeleted: () {
+                          sellC.removeAdditionalFeature(e);
+                        },
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: TextField(
+                controller: sellC.additionalFeatureC,
                 cursorColor: AppColors.grey,
                 decoration: InputDecoration(
-                  suffixIcon: Icon(
-                    Icons.add,
-                    color: AppColors.black,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      sellC
+                          .addAdditionalFeature(sellC.additionalFeatureC.text);
+                      sellC.additionalFeatureC.clear();
+                    },
+                    child: Icon(
+                      Icons.add,
+                      color: AppColors.black,
+                    ),
                   ),
                   labelText: 'Additional features',
                   labelStyle: const TextStyle(color: AppColors.grey),

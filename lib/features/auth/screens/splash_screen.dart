@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
-import 'package:habitat54/features/auth/screens/signup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

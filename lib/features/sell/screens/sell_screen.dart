@@ -8,11 +8,15 @@ import 'package:habitat54/features/sell/screens/sell_step4.dart';
 import 'package:habitat54/features/sell/widgets/sell_timeline.dart';
 
 // ignore: must_be_immutable
-class SellScreen extends StatelessWidget {
-  SellScreen({super.key});
+class SellScreen extends StatefulWidget {
+  const SellScreen({super.key});
 
+  @override
+  State<SellScreen> createState() => _SellScreenState();
+}
+
+class _SellScreenState extends State<SellScreen> {
   static final sellC = Get.put(SellController());
-
   List pages = [
     SellStep1(sellC: sellC),
     SellStep2(sellC: sellC),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
+import 'package:habitat54/features/auth/controllers/auth_controller.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
@@ -14,6 +15,7 @@ class SignupScreen extends StatelessWidget {
   final nameFormKey = GlobalKey<FormState>();
   final emailFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
+  final authC = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SignupScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(),
-        backgroundColor: AppColors.authBackground,
+        backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Container(
@@ -40,56 +42,46 @@ class SignupScreen extends StatelessWidget {
                 Column(
                   children: [
                     AuthTextField(
-                      // controller: authC.signupnNmeC,
+                      controller: authC.signupNameC,
                       formKey: nameFormKey,
-                      text: 'Name', leadingIcon: Icons.person_outline,
-                      // validator: (value) {
-                      //   String? error = authC.nameValidator(value);
-                      //   return error;
-                      // },
+                      text: 'Name',
+                      leadingIcon: Icons.person_outline,
+                      validator: (value) {
+                        String? error = authC.nameValidator(value);
+                        return error;
+                      },
                     ),
                     AuthTextField(
-                      // controller: authC.signupEmailC,
+                      controller: authC.signupEmailC,
                       text: 'Email',
                       formKey: emailFormKey,
                       leadingIcon: Icons.email_outlined,
-                      // validator: (value) {
-                      //   String? error = authC.emailValidator(value);
-                      //   return error;
-                      // },
+                      validator: (value) {
+                        String? error = authC.emailValidator(value);
+                        return error;
+                      },
                     ),
-                    AuthTextField(
-                      // controller: authC.signupEmailC,
-                      text: 'Password',
-                      formKey: passwordFormKey,
-                      leadingIcon: Icons.lock_outline,
-                      obscureText: true,
-                      trailing: Icons.visibility_off,
-                      // validator: (value) {
-                      //   String? error = authC.emailValidator(value);
-                      //   return error;
-                      // },
+                    Obx(
+                      () => AuthTextField(
+                        leadingIcon: Icons.lock_outline,
+                        controller: authC.signupPasswordC,
+                        obscureText: authC.hidePassword.value,
+                        formKey: passwordFormKey,
+                        text: 'Password',
+                        trailing: authC.hidePassword.value
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        trailingTap: () {
+                          authC.hidePassword.value
+                              ? authC.hidePassword(false)
+                              : authC.hidePassword(true);
+                        },
+                        validator: (value) {
+                          String? error = authC.passwordValidator(value);
+                          return error;
+                        },
+                      ),
                     ),
-                    // Obx(
-                    //   () => AuthTextField(
-                    //     controller: authC.signupPasswordC,
-                    //     obscureText: authC.hidePassword.value,
-                    //     formKey: passwordFormKey,
-                    //     text: 'Password',
-                    //     trailing: authC.hidePassword.value
-                    //         ? Icons.visibility_off
-                    //         : Icons.visibility,
-                    //     trailingTap: () {
-                    //       authC.hidePassword.value
-                    //           ? authC.hidePassword(false)
-                    //           : authC.hidePassword(true);
-                    //     },
-                    //     validator: (value) {
-                    //       String? error = authC.passwordValidator(value);
-                    //       return error;
-                    //     },
-                    //   ),
-                    // ),
                     Container(
                       padding: EdgeInsets.only(left: 40, top: 20, bottom: 10),
                       child: DropdownButton<String>(
@@ -128,10 +120,11 @@ class SignupScreen extends StatelessWidget {
                     LongButton(
                       text: 'Sign up',
                       onPressed: () {
-                        // if (nameFormKey.currentState!.validate()) {}
-                        // if (emailFormKey.currentState!.validate()) {}
-                        // if (passwordFormKey.currentState!.validate()) {}
-                        Get.offAll(() => const DashBoard());
+                        if (nameFormKey.currentState!.validate() &&
+                            emailFormKey.currentState!.validate() &&
+                            passwordFormKey.currentState!.validate()) {
+                          Get.offAll(() => const DashBoard());
+                        }
                       },
                     ),
                     const SizedBox(height: 15),

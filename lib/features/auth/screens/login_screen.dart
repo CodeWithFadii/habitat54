@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
+import 'package:habitat54/features/auth/controllers/auth_controller.dart';
 import 'package:habitat54/features/auth/screens/forgot_password_screen.dart';
 import 'package:habitat54/features/auth/screens/signup_screen.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
@@ -12,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final emailFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
+  final authC = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class LoginScreen extends StatelessWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        backgroundColor: AppColors.authBackground,
+        backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Container(
@@ -37,47 +39,36 @@ class LoginScreen extends StatelessWidget {
                 Column(
                   children: [
                     AuthTextField(
-                      // controller: authC.signupEmailC,
+                      controller: authC.loginEmailC,
                       text: 'Email',
                       formKey: emailFormKey,
                       leadingIcon: Icons.email_outlined,
-                      // validator: (value) {
-                      //   String? error = authC.emailValidator(value);
-                      //   return error;
-                      // },
+                      validator: (value) {
+                        String? error = authC.emailValidator(value);
+                        return error;
+                      },
                     ),
-                    AuthTextField(
-                      // controller: authC.signupEmailC,
-                      text: 'Password',
-                      formKey: passwordFormKey,
-                      leadingIcon: Icons.lock_outline,
-                      obscureText: true,
-                      trailing: Icons.visibility_off,
-                      // validator: (value) {
-                      //   String? error = authC.emailValidator(value);
-                      //   return error;
-                      // },
+                    Obx(
+                      () => AuthTextField(
+                        leadingIcon: Icons.lock_outline,
+                        controller: authC.loginPasswordC,
+                        obscureText: authC.hidePassword.value,
+                        formKey: passwordFormKey,
+                        text: 'Password',
+                        trailing: authC.hidePassword.value
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        trailingTap: () {
+                          authC.hidePassword.value
+                              ? authC.hidePassword(false)
+                              : authC.hidePassword(true);
+                        },
+                        validator: (value) {
+                          String? error = authC.passwordValidator(value);
+                          return error;
+                        },
+                      ),
                     ),
-                    // Obx(
-                    //   () => AuthTextField(
-                    //     controller: authC.signupPasswordC,
-                    //     obscureText: authC.hidePassword.value,
-                    //     formKey: passwordFormKey,
-                    //     text: 'Password',
-                    //     trailing: authC.hidePassword.value
-                    //         ? Icons.visibility_off
-                    //         : Icons.visibility,
-                    //     trailingTap: () {
-                    //       authC.hidePassword.value
-                    //           ? authC.hidePassword(false)
-                    //           : authC.hidePassword(true);
-                    //     },
-                    //     validator: (value) {
-                    //       String? error = authC.passwordValidator(value);
-                    //       return error;
-                    //     },
-                    //   ),
-                    // ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -102,10 +93,10 @@ class LoginScreen extends StatelessWidget {
                     LongButton(
                       text: 'Login',
                       onPressed: () {
-                        // if (nameFormKey.currentState!.validate()) {}
-                        // if (emailFormKey.currentState!.validate()) {}
-                        // if (passwordFormKey.currentState!.validate()) {}
-                        Get.offAll(() => const DashBoard());
+                        if (emailFormKey.currentState!.validate() &&
+                            passwordFormKey.currentState!.validate()) {
+                          Get.offAll(() => const DashBoard());
+                        }
                       },
                     ),
                     const SizedBox(height: 15),
@@ -114,9 +105,6 @@ class LoginScreen extends StatelessWidget {
                       color: const Color(0xfff4f4f4),
                       text: 'Sign up',
                       onPressed: () {
-                        // if (nameFormKey.currentState!.validate()) {}
-                        // if (emailFormKey.currentState!.validate()) {}
-                        // if (passwordFormKey.currentState!.validate()) {}
                         Get.to(() => SignupScreen());
                       },
                     ),

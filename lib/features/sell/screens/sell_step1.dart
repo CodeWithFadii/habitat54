@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
@@ -122,39 +125,14 @@ class SellStep1 extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              Visibility(
-                visible: false,
-                child: SizedBox(
-                  height: 120,
-                  child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 7),
-                            height: 70,
-                            width: 70,
-                            decoration: const BoxDecoration(
-                              color: AppColors.grey,
-                            ),
-                            child: Text('data'),
-                          ),
-                          SizedBox(height: 5),
-                          Icon(Icons.close)
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ),
               Container(
                 width: 190,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await sellC.getImagesFromGallery();
+                  },
                   color: AppColors.grey,
                   height: 40,
                   child: Row(
@@ -173,6 +151,49 @@ class SellStep1 extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              Obx(
+                () {
+                  return Visibility(
+                    visible: sellC.imagesList.isNotEmpty,
+                    child: SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        itemCount: sellC.imagesList.length,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 7),
+                                height: 70,
+                                width: 70,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.grey,
+                                ),
+                                child: Image.file(
+                                  File(
+                                    sellC.imagesList[index].path,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              GestureDetector(
+                                  onTap: () {
+                                    sellC.removeImageFromList(index);
+                                  },
+                                  child: Icon(Icons.close))
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

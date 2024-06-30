@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
+import 'package:image_picker/image_picker.dart';
 
 Widget alertDialog() {
   return AlertDialog(
@@ -55,4 +56,14 @@ Widget alertDialog() {
       ],
     ),
   );
+}
+
+Future<XFile?> pickImage() async {
+  final pic = await ImagePicker().pickImage(source: ImageSource.gallery);
+  return pic;
+}
+
+Future<List<XFile>?> pickMultipleImages() async {
+  final pics = await ImagePicker().pickMultiImage();
+  return pics;
 }
