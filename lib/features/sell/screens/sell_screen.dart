@@ -13,6 +13,7 @@ class SellScreen extends StatefulWidget {
 
   @override
   State<SellScreen> createState() => _SellScreenState();
+  
 }
 
 class _SellScreenState extends State<SellScreen> {
