@@ -13,17 +13,19 @@ class AuthTextField extends StatelessWidget {
     this.readOnly = false,
     this.validator,
     this.formKey,
-    required this.leadingIcon,
+    required this.leadingIcon, this.keyboardType,
   });
   final String text;
   final IconData? trailing;
   final GlobalKey<FormState>? formKey;
-  final VoidCallback? trailingTap;
+
   final String? Function(String?)? validator;
+    final VoidCallback? trailingTap;
   final bool? obscureText;
   final TextEditingController? controller;
   final bool readOnly;
   final IconData leadingIcon;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class AuthTextField extends StatelessWidget {
             child: Form(
               key: formKey,
               child: TextFormField(
+                keyboardType:keyboardType ?? TextInputType.text,
                 obscureText: obscureText!,
                 validator: validator,
                 controller: controller,

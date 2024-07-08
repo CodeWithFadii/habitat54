@@ -1,28 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/contact_widget.dart';
-import 'package:habitat54/core/common/feature_product_card.dart';
-// ignore: library_prefixes
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-
 import 'package:habitat54/core/common/loader.dart';
-import 'package:habitat54/features/home/controllers/home_controller.dart';
 import 'package:habitat54/features/property/models/property.dart';
 import 'package:habitat54/features/property/widgets/detail_tile_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class PropertyDetails extends StatelessWidget {
-  PropertyDetails(
+class RecommendedDetailScreen extends StatelessWidget {
+  const RecommendedDetailScreen(
       {super.key, this.userProperty = false, required this.property});
   final bool? userProperty;
   final Property property;
-
   final exampleImage =
       'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
-
-  final homeC = Get.find<HomeController>();
 
   List<String> parseDataString() {
     final dataString = property.features?.first ?? '';
@@ -65,6 +57,28 @@ class PropertyDetails extends StatelessWidget {
               property.propertyType,
               style: AppTextStyle.boldBlack18,
             ),
+            actions: [
+              userProperty!
+                  ? Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.edit,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox()
+            ],
           ),
         ),
       ),
@@ -103,12 +117,11 @@ class PropertyDetails extends StatelessWidget {
                         //   ),
                         // ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7),
                               alignment: Alignment.center,
                               height: 40,
+                              width: 100,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.rectangle,
                                   color: AppColors.primary),
@@ -127,11 +140,10 @@ class PropertyDetails extends StatelessWidget {
               DetailTileWidget(property: property),
               ContactWidget(
                 phonePressed: () {
-                  UrlLauncher.launchUrl(Uri.parse("tel://${property.number}"));
+                  launchUrl(Uri.parse("tel://${property.number}"));
                 },
                 messagePressed: () {
-                  UrlLauncher.launchUrl(
-                      Uri.parse("https://wa.me/${property.number}"));
+                  launchUrl(Uri.parse("https://wa.me/${property.number}"));
                 },
                 number: property.number ?? '',
               ),
@@ -140,22 +152,21 @@ class PropertyDetails extends StatelessWidget {
                   : ExpansionTile(
                       shape: const Border(),
                       title: Text(
-                        'ADDITIONAL FEATURES',
+                        'ADDIONAL FEATURES',
                         style: AppTextStyle.boldBlack16,
                       ),
                       children: [
                         GridView.builder(
-                          padding:
-                              const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: featuresList.length,
+                          itemCount: 6,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   mainAxisExtent: 40, crossAxisCount: 2),
                           itemBuilder: (context, index) {
                             return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Flexible(
                                   child: Text(
@@ -190,12 +201,10 @@ class PropertyDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          property.title.capitalizeFirst!,
+                          property.title,
                           style: AppTextStyle.boldBlack18,
                         ),
-                        property.description == ''
-                            ? const SizedBox(height: 10)
-                            : const SizedBox(),
+                        const SizedBox(height: 10),
                         Text(
                           property.description ?? '',
                         ),
@@ -204,63 +213,6 @@ class PropertyDetails extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'RECOMMENDED',
-                          style: AppTextStyle.boldBlack16,
-                        ),
-                      ],
-                    ),
-                    const Divider()
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                height: 256,
-                child: FutureBuilder<List<Property>>(
-                  future: homeC.getProperties(),
-                  builder: (context, snapshot) {
-                    return snapshot.connectionState == ConnectionState.waiting
-                        ? const Loader()
-                        : snapshot.hasError
-                            ? const Center(
-                                child: Text(
-                                    '  Something went wrong, Please check your internet connection before try again'),
-                              )
-                            : snapshot.data!.isEmpty
-                                ? const Center(
-                                    child: Text('No data available'),
-                                  )
-                                : ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 20,
-                                    ),
-                                    itemCount: snapshot.data!.length > 5
-                                        ? 5
-                                        : snapshot.data!.length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      final propertyList =
-                                          snapshot.data!.reversed.toList();
-                                      return FeatureProductCard(
-                                        exampleImage: exampleImage,
-                                        property: propertyList[index],
-                                        comingFromFeatured: false,
-                                      );
-                                    },
-                                  );
-                  },
-                ),
-              )
             ],
           ),
         ),
@@ -268,4 +220,3 @@ class PropertyDetails extends StatelessWidget {
     );
   }
 }
-

@@ -36,7 +36,7 @@ class GuestScreen extends StatelessWidget {
               const SizedBox(height: 12),
               MaterialButton(
                 onPressed: () {
-                  Get.offAll(() => LoginScreen());
+                  Get.to(() => LoginScreen());
                 },
                 color: AppColors.primary,
                 elevation: 0,

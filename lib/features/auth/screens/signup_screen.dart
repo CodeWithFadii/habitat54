@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
-import 'package:habitat54/core/constants/app_constants.dart';
+import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/features/auth/controllers/auth_controller.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
-import 'package:habitat54/features/auth/widgets/sociel_button.dart';
-import 'package:habitat54/features/dashboard/dashboard.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
   final nameFormKey = GlobalKey<FormState>();
+  final phoneFormKey = GlobalKey<FormState>();
   final emailFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
   final authC = Get.find<AuthController>();
@@ -28,122 +27,141 @@ class SignupScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Sign Up',
-                  style: AppTextStyle.boldBlack30
-                      .copyWith(fontSize: 36, fontWeight: FontWeight.w900),
-                ),
-                Column(
-                  children: [
-                    AuthTextField(
-                      controller: authC.signupNameC,
-                      formKey: nameFormKey,
-                      text: 'Name',
-                      leadingIcon: Icons.person_outline,
-                      validator: (value) {
-                        String? error = authC.nameValidator(value);
-                        return error;
-                      },
-                    ),
-                    AuthTextField(
-                      controller: authC.signupEmailC,
-                      text: 'Email',
-                      formKey: emailFormKey,
-                      leadingIcon: Icons.email_outlined,
-                      validator: (value) {
-                        String? error = authC.emailValidator(value);
-                        return error;
-                      },
-                    ),
-                    Obx(
-                      () => AuthTextField(
-                        leadingIcon: Icons.lock_outline,
-                        controller: authC.signupPasswordC,
-                        obscureText: authC.hidePassword.value,
-                        formKey: passwordFormKey,
-                        text: 'Password',
-                        trailing: authC.hidePassword.value
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        trailingTap: () {
-                          authC.hidePassword.value
-                              ? authC.hidePassword(false)
-                              : authC.hidePassword(true);
-                        },
-                        validator: (value) {
-                          String? error = authC.passwordValidator(value);
-                          return error;
-                        },
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 40, top: 20, bottom: 10),
-                      child: DropdownButton<String>(
-                        hint: const Text(
-                          'Agent',
-                          style: TextStyle(color: AppColors.grey),
+          child: Obx(() {
+            return authC.isLoading.value
+                ? const Loader()
+                : Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sign Up',
+                          style: AppTextStyle.boldBlack30.copyWith(
+                              fontSize: 36, fontWeight: FontWeight.w900),
                         ),
-                        style: AppTextStyle.mediumBlack16,
-                        // value: 'Property Type', // Currently selected item
-                        isExpanded:
-                            true, // Make the dropdown button expand to full width
-                        dropdownColor: Colors.white,
-                        underline: Divider(
-                          height: 1,
-                          color: AppColors.grey,
-                        ),
-
-                        onChanged: (newValue) {},
-
-                        items: ['Agent', 'Agency', 'Buyer'].map((String item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Text(item),
+                        Column(
+                          children: [
+                            AuthTextField(
+                              controller: authC.signupNameC,
+                              formKey: nameFormKey,
+                              text: 'Name',
+                              leadingIcon: Icons.person_outline,
+                              validator: (value) {
+                                String? error = authC.nameValidator(value);
+                                return error;
+                              },
                             ),
-                          );
-                        }).toList(),
-                      ),
+                            AuthTextField(
+                              keyboardType: TextInputType.number,
+                              controller: authC.signupPhoneC,
+                              formKey: phoneFormKey,
+                              text: 'Phone',
+                              leadingIcon: Icons.phone_outlined,
+                              validator: (value) {
+                                String? error = authC.phoneValidator(value);
+                                return error;
+                              },
+                            ),
+                            AuthTextField(
+                              controller: authC.signupEmailC,
+                              text: 'Email',
+                              formKey: emailFormKey,
+                              leadingIcon: Icons.email_outlined,
+                              validator: (value) {
+                                String? error = authC.emailValidator(value);
+                                return error;
+                              },
+                            ),
+                            AuthTextField(
+                              leadingIcon: Icons.lock_outline,
+                              controller: authC.signupPasswordC,
+                              obscureText: authC.hidePassword.value,
+                              formKey: passwordFormKey,
+                              text: 'Password',
+                              trailing: authC.hidePassword.value
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              trailingTap: () {
+                                authC.hidePassword.value
+                                    ? authC.hidePassword(false)
+                                    : authC.hidePassword(true);
+                              },
+                              validator: (value) {
+                                String? error = authC.passwordValidator(value);
+                                return error;
+                              },
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 40, top: 20, bottom: 10),
+                              child: DropdownButton<String>(
+                                hint: const Text(
+                                  'Agent',
+                                  style: TextStyle(color: AppColors.grey),
+                                ),
+                                style: AppTextStyle.mediumBlack16,
+                                value:
+                                    authC.role.value, // Currently selected item
+                                isExpanded:
+                                    true, // Make the dropdown button expand to full width
+                                dropdownColor: Colors.white,
+                                underline: const Divider(
+                                  height: 1,
+                                  color: AppColors.grey,
+                                ),
+
+                                onChanged: (newValue) {
+                                  authC.role.value = newValue!;
+                                },
+
+                                items: ['Agent', 'Agency', 'Buyer']
+                                    .map((String item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: Text(item),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const SizedBox(height: 15),
+                            LongButton(
+                              text: 'Sign up',
+                              onPressed: () {
+                                if (nameFormKey.currentState!.validate() &&
+                                    phoneFormKey.currentState!.validate() &&
+                                    emailFormKey.currentState!.validate() &&
+                                    passwordFormKey.currentState!.validate()) {
+                                  authC.signupUser();
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 15),
+                            LongButton(
+                              textColor: AppColors.black,
+                              color: const Color(0xfff4f4f4),
+                              text: 'Login',
+                              onPressed: () {
+                                // if (nameFormKey.currentState!.validate()) {}
+                                // if (emailFormKey.currentState!.validate()) {}
+                                // if (passwordFormKey.currentState!.validate()) {}
+                                Get.to(() => LoginScreen());
+                              },
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    LongButton(
-                      text: 'Sign up',
-                      onPressed: () {
-                        if (nameFormKey.currentState!.validate() &&
-                            emailFormKey.currentState!.validate() &&
-                            passwordFormKey.currentState!.validate()) {
-                          Get.offAll(() => const DashBoard());
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 15),
-                    LongButton(
-                      textColor: AppColors.black,
-                      color: const Color(0xfff4f4f4),
-                      text: 'Login',
-                      onPressed: () {
-                        // if (nameFormKey.currentState!.validate()) {}
-                        // if (emailFormKey.currentState!.validate()) {}
-                        // if (passwordFormKey.currentState!.validate()) {}
-                        Get.to(() => LoginScreen());
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+                  );
+          }),
         ),
       ),
     );

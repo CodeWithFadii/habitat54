@@ -1,17 +1,18 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/loader.dart';
-import 'package:habitat54/features/sell/controllers/sell_controller.dart';
 import 'package:habitat54/features/sell/widgets/previous_next_button.dart';
 import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
+import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 
-class SellStep4 extends StatelessWidget {
-  const SellStep4({super.key, required this.sellC});
-  final SellController sellC;
+class UpdateSellStep4 extends StatelessWidget {
+  const UpdateSellStep4({super.key, required this.sellC});
+  final UpdateSellController sellC;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,7 @@ class SellStep4 extends StatelessWidget {
         next: () {
           sellC.uploadProperty();
         },
-        nextText: 'Submit',
+        nextText: 'Update',
       ),
       body: SafeArea(
         child: Obx(() {
@@ -66,7 +67,8 @@ class SellStep4 extends StatelessWidget {
                             )
                           : const SizedBox(),
                       Visibility(
-                        visible: sellC.document.isNotEmpty,
+                        visible: sellC.document.isNotEmpty ||
+                            sellC.galleryDocument.isNotEmpty,
                         child: SizedBox(
                           height: 120,
                           child: Column(
@@ -80,18 +82,40 @@ class SellStep4 extends StatelessWidget {
                                       decoration: const BoxDecoration(
                                         color: AppColors.grey,
                                       ),
-                                      child: Image.file(
-                                        File(
-                                          sellC.document.value,
-                                        ),
+                                      child: CachedNetworkImage(
+                                        imageUrl: sellC.document.value,
                                         fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const Loader(),
+                                        errorWidget: (context, url, error) =>
+                                            const SizedBox(
+                                          width: double.infinity,
+                                          child: Icon(
+                                            Icons.error,
+                                          ),
+                                        ),
                                       ),
                                     )
-                                  : const SizedBox(),
+                                  : sellC.galleryDocument.isNotEmpty
+                                      ? Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 7, vertical: 10),
+                                          height: 70,
+                                          width: 70,
+                                          decoration: const BoxDecoration(
+                                            color: AppColors.grey,
+                                          ),
+                                          child: Image.file(
+                                            File(sellC.galleryDocument.value),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : const SizedBox(),
                               const SizedBox(height: 5),
                               GestureDetector(
                                   onTap: () {
                                     sellC.document.value = '';
+                                    sellC.galleryDocument.value = '';
                                   },
                                   child: const Icon(Icons.close))
                             ],
@@ -155,11 +179,11 @@ class SellStep4 extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 15),
                         shrinkWrap: true,
-                        itemCount: sellC.additionalFeatures.length,
+                        itemCount: sellC.additionalFeaturesList.length,
                         itemBuilder: (context, index) {
-                          final feature = sellC.additionalFeatures[index];
+                          final feature = sellC.additionalFeaturesList[index];
                           return ListTile(
-                            title: Text('${feature['name']} : ${feature['value']}'),
+                            title: Text('${feature.name} : ${feature.value}'),
                             trailing: GestureDetector(
                               onTap: () =>
                                   sellC.removeAdditionalFeature(feature),

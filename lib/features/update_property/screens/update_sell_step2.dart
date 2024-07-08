@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/show_map.dart';
-import 'package:habitat54/features/sell/controllers/sell_controller.dart';
 import 'package:habitat54/features/sell/widgets/custom_dropdown.dart';
 import 'package:habitat54/features/sell/widgets/previous_next_button.dart';
+import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 
-class SellStep2 extends StatelessWidget {
-  const SellStep2({super.key, required this.sellC});
-  final SellController sellC;
+class UpdateSellStep2 extends StatelessWidget {
+  const UpdateSellStep2({super.key, required this.sellC});
+  final UpdateSellController sellC;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +34,7 @@ class SellStep2 extends StatelessWidget {
                     color: AppColors.grey,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ShowMap(
-                    cityName: sellC.city.value,
-                  ),
+                  child: ShowMap(cityName: sellC.city.value),
                 ),
                 CustomDropDown(
                   title: 'City',

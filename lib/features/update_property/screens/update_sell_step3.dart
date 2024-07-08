@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
-import 'package:habitat54/features/sell/controllers/sell_controller.dart';
 import 'package:habitat54/features/sell/widgets/previous_next_button.dart';
 import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
+import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 
-class SellStep3 extends StatelessWidget {
-  const SellStep3({super.key, required this.sellC});
-  final SellController sellC;
+class UpdateSellStep3 extends StatelessWidget {
+  const UpdateSellStep3({super.key, required this.sellC});
+  final UpdateSellController sellC;
 
   @override
   Widget build(BuildContext context) {

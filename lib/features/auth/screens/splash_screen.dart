@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
-import 'package:habitat54/features/auth/screens/login_screen.dart';
+import 'package:habitat54/core/controllers/connectivity_controller.dart';
+import 'package:habitat54/core/controllers/session_controller.dart';
+import 'package:habitat54/features/dashboard/dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,17 +14,28 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final internetC = Get.put(ConnectivityController(), permanent: true);
+  final sessionC = Get.put(SessionController(), permanent: true);
+
   bool isLoading = true;
 
-  void navigateToAuthScreen() {
+  void navigate() async {
+    sessionC.checkSession();
     Future.delayed(const Duration(seconds: 2), () {
-      Get.offAll(() => LoginScreen());
+      if (internetC.connectionStatus.value) {
+        Get.offAll(() => DashBoard());
+      }
     });
   }
 
   @override
+  void initState() {
+    navigate();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    navigateToAuthScreen();
     final height = MediaQuery.sizeOf(context).height * 1;
     return Scaffold(
       body: Stack(

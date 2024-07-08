@@ -1,23 +1,29 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
+import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/features/profile/controllers/profile_controller.dart';
 import 'package:habitat54/features/profile/screens/my_properties_screen.dart';
+import 'package:habitat54/features/update_property/screens/update_sell_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:habitat54/core/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:habitat54/features/property/models/property.dart';
+import 'package:habitat54/features/sell/screens/sell_step4.dart';
 
-class SellController extends GetxController {
+class UpdateSellController extends GetxController {
+  RxString propertyId = ''.obs;
   RxBool isLoading = false.obs;
   RxInt pageIndex = 0.obs;
   RxList<String> imagesList = <String>[].obs;
+  RxString galleryImage = ''.obs;
+  RxString galleryDocument = ''.obs;
   RxString document = ''.obs;
   RxList<String> featuresList = <String>[].obs;
   RxList<String> cityList = <String>[].obs;
   RxList<String> neighborhoodList = <String>[].obs;
-  RxList<Map<String, String>> additionalFeatures = <Map<String, String>>[].obs;
-  // RxList<AdditionalFeature> additionalFeaturesList = <AdditionalFeature>[].obs;
+
+  RxList<AdditionalFeature> additionalFeaturesList = <AdditionalFeature>[].obs;
   //DropDownItems
   RxString propertyType = ''.obs;
   RxString offerType = ''.obs;
@@ -40,7 +46,8 @@ class SellController extends GetxController {
   final profileC = Get.find<ProfileController>();
 
   Future<void> uploadProperty() async {
-    final url = Uri.parse('${AppConstants.baseUrl}add_products');
+    final url =
+        Uri.parse('${AppConstants.baseUrl}update_products/${propertyId.value}');
 
     try {
       // Create multipart request
@@ -63,24 +70,24 @@ class SellController extends GetxController {
       request.fields['bedrooms'] = bedroomsC.text.toString();
       request.fields['bathrooms'] = bathroomsC.text.toString();
       request.fields['vedio'] = youtubeLink.text.toString();
-
       request.fields['features'] =
           jsonEncode(featuresList.map((feature) => feature).toList());
 
-      print(jsonEncode(additionalFeatures));
-
-      request.fields['additional_data'] = jsonEncode(additionalFeatures);
+      // Convert additionalFeaturesList to List<Map<String, dynamic>>
+      List<Map<String, dynamic>> additionalDataJson =
+          additionalFeaturesList.map((feature) => feature.toJson()).toList();
+      request.fields['additional_data'] = jsonEncode(additionalDataJson);
 
       // Convert additionalDataJson to JSON string and add to request
 
       // Add image file if exists
-      if (imagesList.isNotEmpty) {
+      if (imagesList.isEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
-            'upload_image', imagesList[0].toString()));
+            'upload_image', galleryImage.value.toString()));
       }
-      if (document.value.isNotEmpty) {
+      if (document.value.isEmpty && galleryDocument.isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
-            'upload_document', document.value.toString()));
+            'upload_document', galleryDocument.value.toString()));
       }
 
       // Define headers
@@ -92,18 +99,15 @@ class SellController extends GetxController {
       final response = await request.send();
       isLoading(false);
       // Handle the response
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        final data = jsonDecode(responseBody);
-        log('Response: $data');
-        updateValues();
-        Get.to(() => const MyPropertiesScreen(isRefresh: true));
-
+      if (response.statusCode == 200 || response.statusCode == 500) {
+        clearValues();
+        Get.off(() => const MyPropertiesScreen(isRefresh: true));
         isLoading(false);
       } else {
         // final responseBody = await response.stream.bytesToString();
         log('HTTP Error: ${response.statusCode}');
         isLoading(false);
+        showCustomSnackbar('Something went wrong please try again');
       }
     } catch (e) {
       log('Exception: $e');
@@ -111,12 +115,15 @@ class SellController extends GetxController {
     }
   }
 
-  void updateValues() {
+  void clearValues() {
     pageIndex.value = 0;
+    propertyId.value = '';
     imagesList.clear();
+    galleryImage.value = '';
     document.value = '';
+    galleryDocument.value = '';
     featuresList.clear();
-    // additionalFeaturesList.clear();
+    additionalFeaturesList.clear();
     propertyType.value = '';
     offerType.value = '';
     city.value = '';
@@ -135,22 +142,54 @@ class SellController extends GetxController {
     additionalFeatureValueC.clear();
   }
 
+  void updatePropertyValues(Property property, List<String> features) {
+    pageIndex.value = 0;
+    propertyId.value = property.id.toString();
+    imagesList.clear();
+    imagesList.add(property.uploadImage!);
+    document.value = property.uploadDocument ?? '';
+    featuresList.clear();
+    featuresList.addAll(features);
+    // additionalFeaturesList.clear();
+    propertyType.value = property.propertyType;
+    offerType.value = property.otherType ?? '';
+    city.value = property.city;
+    neighborhood.value = property.nieghborhood ?? '';
+    step1Validate.value = false;
+    step2Validate.value = false;
+    titleC.text = property.title;
+    descriptionC.text = property.description ?? '';
+    priceC.text = property.price;
+    bedroomsC.text = property.bedrooms ?? '';
+    bathroomsC.text = property.bathrooms ?? '';
+    propertySize.text = property.propertySize ?? '';
+    featureC.clear();
+    youtubeLink.text = property.vedio ?? '';
+    // additionalFeaturesList.value = property.additional;
+    additionalFeatureNameC.clear();
+    additionalFeatureValueC.clear();
+    Get.to(() => const UpdateSellScreen());
+  }
+
   Future<void> getImagesFromGallery() async {
     final pic = await pickImage();
     if (pic != null) {
-      imagesList.add(pic.path);
+      imagesList.clear();
+      galleryImage.value = pic.path;
     }
   }
 
   Future<void> getDocument() async {
     final pic = await pickImage();
     if (pic != null) {
-      document.value = pic.path;
+      document.value = '';
+      galleryDocument.value = pic.path;
     }
   }
 
   void removeImageFromList() {
-    imagesList.removeAt(0);
+    imagesList.clear();
+    galleryImage.value = '';
   }
 
   void addFeature(String feature) {
@@ -167,14 +206,13 @@ class SellController extends GetxController {
   void addAdditionalFeature() {
     if (additionalFeatureNameC.text.isNotEmpty &&
         additionalFeatureValueC.text.isNotEmpty) {
-      Map<String, String> additionalFeature = {
-        'name': additionalFeatureNameC.text,
-        'value': additionalFeatureValueC.text
-      };
+      final additionalFeature = AdditionalFeature(
+          name: additionalFeatureNameC.text,
+          value: additionalFeatureValueC.text.toString());
 
       // Check if the additionalFeaturesList already contains an item with the same name
-      if (!additionalFeatures.contains(additionalFeature)) {
-        additionalFeatures.add(additionalFeature);
+      if (!additionalFeaturesList.contains(additionalFeature)) {
+        additionalFeaturesList.add(additionalFeature);
       }
 
       additionalFeatureNameC.clear();
@@ -182,18 +220,17 @@ class SellController extends GetxController {
     }
   }
 
-  void removeAdditionalFeature(Map<String, String> additionalfeature) {
-    additionalFeatures.remove(additionalfeature);
+  void removeAdditionalFeature(AdditionalFeature additionalfeature) {
+    additionalFeaturesList.remove(additionalfeature);
   }
-
-// Steps Validate
 
   void step1Validator() {
     step1Validate.value = true;
     if (titleC.value.text.isNotEmpty &&
-        priceC.value.text.isNotEmpty &&
-        propertyType.isNotEmpty &&
-        imagesList.isNotEmpty) {
+            priceC.value.text.isNotEmpty &&
+            propertyType.isNotEmpty &&
+            imagesList.isNotEmpty ||
+        galleryImage.isNotEmpty) {
       pageIndex(pageIndex.value + 1);
       step1Validate.value = false;
     }

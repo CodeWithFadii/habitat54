@@ -4,16 +4,19 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/loader.dart';
-import 'package:habitat54/core/common/stack_small_widget.dart';
+import 'package:habitat54/features/property/models/property.dart';
 import 'package:habitat54/features/property/screens/property_details.dart';
 
 class PropertyCard extends StatelessWidget {
   const PropertyCard({
     super.key,
     required this.exampleImage,
+    required this.property,
+    this.userProperty = false,
   });
-
+  final Property property;
   final String exampleImage;
+  final bool userProperty;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +35,17 @@ class PropertyCard extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => PropertyDetails());
+                    Get.to(() => PropertyDetails(
+                          property: property,
+                          userProperty: userProperty,
+                        ));
                   },
                   child: CachedNetworkImage(
                     height: 165,
                     width: double.infinity,
-                    imageUrl: exampleImage,
+                    imageUrl: property.uploadImage!.isNotEmpty
+                        ? property.uploadImage!
+                        : exampleImage,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => const Loader(),
                     errorWidget: (context, url, error) => const SizedBox(
@@ -48,25 +56,28 @@ class PropertyCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const StackSmallWidget(),
+                // const StackSmallWidget(),
               ],
             ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Text(
-                    '2 bedroom apartment for sale in Downtown Dubai',
-                    style: AppTextStyle.boldBlack20,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      property.title,
+                      style: AppTextStyle.boldBlack20,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   const SizedBox(height: 3),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'AED 49,999',
+                        'AED ${property.price}',
                         style: AppTextStyle.boldBlack16
                             .copyWith(color: AppColors.primary),
                       ),
@@ -74,7 +85,10 @@ class PropertyCard extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Get.to(() => PropertyDetails());
+                              Get.to(() => PropertyDetails(
+                                    property: property,
+                                    userProperty: userProperty,
+                                  ));
                             },
                             child: Text(
                               'DETAILS',

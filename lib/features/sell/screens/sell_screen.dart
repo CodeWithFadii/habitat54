@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitat54/features/profile/controllers/profile_controller.dart';
 import 'package:habitat54/features/sell/controllers/sell_controller.dart';
 import 'package:habitat54/features/sell/screens/sell_step1.dart';
 import 'package:habitat54/features/sell/screens/sell_step2.dart';
@@ -13,10 +14,10 @@ class SellScreen extends StatefulWidget {
 
   @override
   State<SellScreen> createState() => _SellScreenState();
-  
 }
 
 class _SellScreenState extends State<SellScreen> {
+  final profilec = Get.put(ProfileController());
   static final sellC = Get.put(SellController());
   List pages = [
     SellStep1(sellC: sellC),
@@ -32,8 +33,9 @@ class _SellScreenState extends State<SellScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(90),
+          preferredSize: const Size.fromHeight(90),
           child: Padding(
               padding: const EdgeInsets.only(top: 25),
               child: Obx(
@@ -45,7 +47,6 @@ class _SellScreenState extends State<SellScreen> {
         ),
         body: Obx(
           () {
-            print(sellC.pageIndex.value);
             return pages[sellC.pageIndex.value];
           },
         ),

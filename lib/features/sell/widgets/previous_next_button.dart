@@ -26,12 +26,12 @@ class PreviousNextButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.arrow_back_ios,
                   color: AppColors.white,
                   size: 20,
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Text(
                   'Previous Step',
                   style: AppTextStyle.mediumWhite14,
@@ -54,8 +54,8 @@ class PreviousNextButton extends StatelessWidget {
                   nextText??  'Continue',
                   style: AppTextStyle.mediumWhite14,
                 ),
-                SizedBox(width: 5),
-                Icon(
+                const SizedBox(width: 5),
+                const Icon(
                   Icons.arrow_forward_ios,
                   color: AppColors.white,
                   size: 20,

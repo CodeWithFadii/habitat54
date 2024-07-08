@@ -27,6 +27,7 @@ class AppBarWidget extends StatelessWidget {
           ],
         ),
         child: AppBar(
+          automaticallyImplyLeading: false,
           scrolledUnderElevation: 0,
           centerTitle: false,
           titleSpacing: 0.0,

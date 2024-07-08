@@ -16,8 +16,8 @@ class BackButtonWidget extends StatelessWidget {
         Get.back();
       },
       child: Container(
-        margin: EdgeInsets.only(right: 20),
-        padding: EdgeInsets.all(4),
+        margin: const EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: AppColors.grey),
