@@ -25,7 +25,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
       'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
 
   final profileC = Get.put(ProfileController());
-  final homeC = Get.find<HomeController>();
+  final homeC = Get.put(HomeController());
 
   void refresh() {
     setState(() {});
@@ -84,6 +84,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                           child: Text('No data available'),
                         )
                       : ListView.builder(
+                          reverse: true,
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           itemCount: snapshot.data!.length,
                           shrinkWrap: true,
@@ -108,7 +109,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                             }
 
                             featureList = parseDataString();
-
+                            print(property.uploadImage);
                             return GestureDetector(
                               onTap: () {
                                 Get.to(
@@ -151,8 +152,9 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                                                       color: AppColors.grey),
                                             ),
                                             Text(
-                                              ' ${property.propertyType}',
+                                              property.propertyType,
                                               style: AppTextStyle.mediumBlack16,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ],
                                         ),
@@ -175,13 +177,13 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                                         Wrap(
                                           children: [
                                             Text(
-                                              'Upload : ',
+                                              'Uploaded : ',
                                               style: AppTextStyle.mediumBlack16
                                                   .copyWith(
                                                       color: AppColors.grey),
                                             ),
                                             Text(
-                                              ' ${property.createdAt}',
+                                              property.createdAt,
                                               style: AppTextStyle.mediumBlack16,
                                             ),
                                           ],

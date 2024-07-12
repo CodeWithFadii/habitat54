@@ -77,6 +77,8 @@ class LoginScreen extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    authC.forgetPasswordC.text =
+                                        authC.loginEmailC.text;
                                     Get.to(() => ForgetPasswordScreen());
                                   },
                                   child: Text(

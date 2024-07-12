@@ -1,116 +1,110 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
-import 'package:habitat54/core/common/loader.dart';
-import 'package:habitat54/features/property/models/property.dart';
-import 'package:habitat54/features/property/screens/property_details.dart';
+import 'package:habitat54/core/constants/app_constants.dart';
 
-class HomeCrousel extends StatelessWidget {
-  HomeCrousel({
-    super.key,
-    required this.propertyList,
-  });
-  final exampleImage =
-      'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
+class HomeCrousel extends StatefulWidget {
+  const HomeCrousel({super.key});
 
-  final List<Property> propertyList;
+  @override
+  _HomeCrouselState createState() => _HomeCrouselState();
+}
+
+class _HomeCrouselState extends State<HomeCrousel> {
   final PageController _pageController = PageController();
+  late Timer _timer;
+  bool _isReversed = false;
+  int _currentPage = 0;
+  List<String> propertyAdvertisements = [
+    "Modern Shops in Prime Locations",
+    "Luxury Living, Affordable Prices Await",
+    "Spacious Apartments, Stunning City Views"
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoSlide();
+  }
+
+  void _startAutoSlide() {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_isReversed) {
+        if (_currentPage == 0) {
+          _isReversed = false;
+          _currentPage++;
+        } else {
+          _currentPage--;
+        }
+      } else {
+        if (_currentPage == AppConstants.bannerList.length - 1) {
+          _isReversed = true;
+          _currentPage--;
+        } else {
+          _currentPage++;
+        }
+      }
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 380,
       child: PageView.builder(
-        itemCount: propertyList.length > 5 ? 5 : propertyList.length,
+        itemCount: AppConstants.bannerList.length,
         controller: _pageController,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
+          final image = AppConstants.bannerList[index];
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
               GestureDetector(
-                onTap: () {
-                  Get.to(() => PropertyDetails(property: propertyList[index]));
-                },
-                child: CachedNetworkImage(
-                  width: double.infinity,
+                child: Image.asset(
+                  image,
                   height: 380,
-                  imageUrl: propertyList[index].uploadImage!,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => const Loader(),
-                  errorWidget: (context, url, error) => const SizedBox(
-                    width: double.infinity,
-                    child: Icon(
-                      Icons.error,
-                    ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                height: 380,
+                width: double.infinity,
+                color: AppColors.black.withOpacity(0.25),
+                child: TweenAnimationBuilder(
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  duration: Duration(milliseconds: 1000),
+                  builder: (context, value, child) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: value * 145),
+                      child: Opacity(
+                        opacity: value,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    propertyAdvertisements[index],
+                    style: AppTextStyle.boldWhite30
+                        .copyWith(fontWeight: FontWeight.w900, wordSpacing: 1),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
-              Positioned(
-                left: 40,
-                right: 40,
-                bottom: 20,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: AppColors.white,
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      propertyList[index].title.toUpperCase(),
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
-                      overflow: TextOverflow
-                          .ellipsis, // optional: adds ellipsis if text overflows
-                      style: AppTextStyle.boldBlack18
-                          .copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _pageController.previousPage(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeOutExpo);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                                color: AppColors.white.withOpacity(0.6)),
-                            child: const Icon(Icons.arrow_back_ios),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _pageController.nextPage(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeOutExpo);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                                color: AppColors.white.withOpacity(0.6)),
-                            child: const Icon(Icons.arrow_forward_ios),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              )
             ],
           );
         },

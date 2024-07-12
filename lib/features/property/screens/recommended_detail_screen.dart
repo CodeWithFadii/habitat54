@@ -24,7 +24,7 @@ class RecommendedDetailScreen extends StatelessWidget {
     if (dataString.length < 4) {
       return [];
     }
-    String cleanedString = dataString.substring(2, dataString.length - 2);
+    String cleanedString = dataString.substring(1, dataString.length - 1);
     List<String> list = cleanedString.split(',');
     for (int i = 0; i < list.length; i++) {
       list[i] = list[i].replaceAll('"', '').trim();
@@ -160,13 +160,13 @@ class RecommendedDetailScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 6,
+                          itemCount: featuresList.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   mainAxisExtent: 40, crossAxisCount: 2),
                           itemBuilder: (context, index) {
                             return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(
                                   child: Text(

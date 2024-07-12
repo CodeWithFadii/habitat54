@@ -13,7 +13,7 @@ class DashboardNavItem extends StatelessWidget {
   });
   final bool isActive;
   final Function()? onTap;
-  final String icon;
+  final IconData icon;
   final double? size;
   final String text;
 
@@ -24,11 +24,16 @@ class DashboardNavItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
+          Icon(
             icon,
-            height: size ?? 21,
             color: isActive ? AppColors.primary : AppColors.grey,
+            size: 26,
           ),
+          // Image.asset(
+          //   icon,
+          //   height: size ?? 21,
+          //   color: isActive ? AppColors.primary : AppColors.grey,
+          // ),
           const SizedBox(height: 5),
           Text(
             text,

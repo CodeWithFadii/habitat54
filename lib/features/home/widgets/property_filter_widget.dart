@@ -9,7 +9,8 @@ import 'package:habitat54/features/sell/widgets/custom_dropdown.dart';
 class PropertyFilterWidget extends StatelessWidget {
   const PropertyFilterWidget({
     super.key,
-    required this.homeC, required this.propertyList,
+    required this.homeC,
+    required this.propertyList,
   });
 
   final HomeController homeC;
@@ -185,17 +186,19 @@ class PropertyFilterWidget extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'RECENTLY ADDED',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
+          propertyList.isEmpty
+              ? SizedBox()
+              : const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'RECENTLY ADDED',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
         ],
       );
     });

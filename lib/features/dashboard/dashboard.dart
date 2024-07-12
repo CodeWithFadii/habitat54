@@ -20,12 +20,16 @@ class DashBoard extends StatelessWidget {
   final List<Widget> pages = [
     const HomeScreen(),
     PropertiesScreen(),
-    Obx(() => Get.find<SessionController>().id.value.isNotEmpty
-        ? const SellScreen()
-        : LoginScreen()),
-    Obx(() => Get.find<SessionController>().id.value.isNotEmpty
-        ? ProfileScreen()
-        : const GuestScreen()),
+    Obx(
+      () => Get.find<SessionController>().isVarified.value
+          ? const SellScreen()
+          : LoginScreen(),
+    ),
+    Obx(
+      () => Get.find<SessionController>().isVarified.value
+          ? ProfileScreen()
+          : const GuestScreen(),
+    ),
   ];
 
   @override
@@ -39,7 +43,7 @@ class DashBoard extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: pages[dashboardC.index.value],
         bottomNavigationBar: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 9),
           width: width,
           height: 70,
           decoration: BoxDecoration(
@@ -59,25 +63,25 @@ class DashBoard extends StatelessWidget {
             children: [
               DashboardNavItem(
                 text: 'Home',
-                icon: AppConstants.home,
+                icon: Icons.home,
                 isActive: dashboardC.index.value == 0,
                 onTap: () => dashboardC.index.value = 0,
               ),
               DashboardNavItem(
                 text: 'Buy',
-                icon: AppConstants.buy,
+                icon: Icons.shopping_cart,
                 isActive: dashboardC.index.value == 1,
                 onTap: () => dashboardC.index.value = 1,
               ),
               DashboardNavItem(
                 text: 'Sell',
-                icon: AppConstants.sell,
+                icon: Icons.monetization_on,
                 isActive: dashboardC.index.value == 2,
                 onTap: () => dashboardC.index.value = 2,
               ),
               DashboardNavItem(
                 text: 'Profile',
-                icon: AppConstants.profile,
+                icon: Icons.person,
                 isActive: dashboardC.index.value == 3,
                 onTap: () => dashboardC.index.value = 3,
               ),

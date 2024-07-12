@@ -32,7 +32,7 @@ class PropertyDetails extends StatelessWidget {
     if (dataString.length < 4) {
       return [];
     }
-    String cleanedString = dataString.substring(2, dataString.length - 2);
+    String cleanedString = dataString.substring(1, dataString.length - 1);
     List<String> list = cleanedString.split(',');
     for (int i = 0; i < list.length; i++) {
       list[i] = list[i].replaceAll('"', '').trim();
@@ -106,7 +106,8 @@ class PropertyDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 7),
                               alignment: Alignment.center,
                               height: 40,
                               decoration: const BoxDecoration(
@@ -145,8 +146,8 @@ class PropertyDetails extends StatelessWidget {
                       ),
                       children: [
                         GridView.builder(
-                          padding:
-                              const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, bottom: 20),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: featuresList.length,
@@ -268,4 +269,3 @@ class PropertyDetails extends StatelessWidget {
     );
   }
 }
-

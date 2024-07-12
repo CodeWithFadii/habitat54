@@ -64,12 +64,13 @@ class SellController extends GetxController {
       request.fields['bathrooms'] = bathroomsC.text.toString();
       request.fields['vedio'] = youtubeLink.text.toString();
 
-      request.fields['features'] =
-          jsonEncode(featuresList.map((feature) => feature).toList());
+      request.fields['features'] = featuresList.toString();
+      // jsonEncode(featuresList.map((feature) => feature).toList());
 
       print(jsonEncode(additionalFeatures));
 
-      request.fields['additional_data'] = jsonEncode(additionalFeatures);
+      request.fields['additional_data'] =
+          jsonEncode(additionalFeatures.map((feature) => feature).toList());
 
       // Convert additionalDataJson to JSON string and add to request
 
@@ -98,8 +99,13 @@ class SellController extends GetxController {
         log('Response: $data');
         updateValues();
         Get.to(() => const MyPropertiesScreen(isRefresh: true));
+        showCustomSnackbar('Property Uploaded');
 
         isLoading(false);
+      } else if (response.statusCode == 500) {
+        showCustomSnackbar('Property Uploaded');
+        updateValues();
+        Get.to(() => const MyPropertiesScreen(isRefresh: true));
       } else {
         // final responseBody = await response.stream.bytesToString();
         log('HTTP Error: ${response.statusCode}');
@@ -131,6 +137,7 @@ class SellController extends GetxController {
     propertySize.clear();
     featureC.clear();
     youtubeLink.clear();
+    additionalFeatures.clear();
     additionalFeatureNameC.clear();
     additionalFeatureValueC.clear();
   }

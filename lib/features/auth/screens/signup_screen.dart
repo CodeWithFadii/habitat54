@@ -5,6 +5,7 @@ import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/features/auth/controllers/auth_controller.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
+import 'package:habitat54/features/auth/screens/pin_input_screen.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
 

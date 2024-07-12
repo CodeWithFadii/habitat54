@@ -102,6 +102,7 @@ class UpdateSellController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 500) {
         clearValues();
         Get.off(() => const MyPropertiesScreen(isRefresh: true));
+        showCustomSnackbar('Product Updated');
         isLoading(false);
       } else {
         // final responseBody = await response.stream.bytesToString();

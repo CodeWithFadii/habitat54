@@ -46,107 +46,123 @@ class _HomeScreenState extends State<HomeScreen> {
           color: AppColors.primary,
           backgroundColor: AppColors.white,
           onRefresh: _refreshProperties,
-          child: FutureBuilder<List<Property>>(
-            future: homeC.getProperties(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? const Loader()
-                  : snapshot.hasError
-                      ? Center(
-                          child: Text(
-                              'Something went wrong, Please check your internet connection before try again ${snapshot.error}'),
-                        )
-                      : snapshot.data!.isEmpty
-                          ? const Center(
-                              child: Text('No data available'),
-                            )
-                          : SingleChildScrollView(
-                              child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                HomeCrousel(
-                                  propertyList: snapshot.data!,
-                                ),
-                                const SizedBox(height: 20),
-                                PropertyFilterWidget(
-                                  homeC: homeC,
-                                  propertyList: snapshot.data!,
-                                ),
-                                const SizedBox(height: 15),
-                                const Divider(),
-                                const SizedBox(height: 20),
-                                ListView.builder(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: snapshot.data!.length > 5
-                                      ? 5
-                                      : snapshot.data!.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    final property = snapshot.data![index];
-                                    return PropertyCard(
-                                      exampleImage: exampleImage,
-                                      property: property,
-                                    );
-                                  },
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(() => PropertiesScreen());
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(bottom: 15),
-                                      alignment: Alignment.center,
-                                      height: 50,
-                                      width: 100,
-                                      color: AppColors.primary,
-                                      child: Text(
-                                        'View more',
-                                        style: AppTextStyle.boldWhite16,
-                                      ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HomeCrousel(),
+                const SizedBox(height: 20),
+                FutureBuilder<List<Property>>(
+                  future: homeC.getProperties(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: const Loader(),
+                          )
+                        : snapshot.hasError
+                            ? Center(
+                                child: Text(
+                                    'Something went wrong, Please check your internet connection before try again ${snapshot.error}'),
+                              )
+                            : snapshot.data!.isEmpty
+                                ? const Center(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 90, bottom: 30),
+                                      child: Text('No Properties available'),
                                     ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                  )
+                                : Column(
                                     children: [
-                                      Text(
-                                        'FEATURED',
-                                        style: AppTextStyle.boldBlack16
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
+                                      PropertyFilterWidget(
+                                        homeC: homeC,
+                                        propertyList: snapshot.data!,
+                                      ),
+                                      const SizedBox(height: 15),
+                                      const Divider(),
+                                      const SizedBox(height: 20),
+                                      ListView.builder(
+                                        reverse: true,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: snapshot.data!.length > 5
+                                            ? 5
+                                            : snapshot.data!.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          final property =
+                                              snapshot.data![index];
+                                          return PropertyCard(
+                                            exampleImage: exampleImage,
+                                            property: property,
+                                          );
+                                        },
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.to(() => PropertiesScreen());
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                bottom: 15),
+                                            alignment: Alignment.center,
+                                            height: 50,
+                                            width: 100,
+                                            color: AppColors.primary,
+                                            child: Text(
+                                              'View more',
+                                              style: AppTextStyle.boldWhite16,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'FEATURED',
+                                              style: AppTextStyle.boldBlack16
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 256,
+                                        child: ListView.builder(
+                                          itemCount: snapshot.data!.length > 5
+                                              ? 5
+                                              : snapshot.data!.length,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20),
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) {
+                                            final property =
+                                                snapshot.data![index];
+                                            return FeatureProductCard(
+                                              exampleImage: exampleImage,
+                                              property: property,
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 256,
-                                  child: ListView.builder(
-                                    itemCount: snapshot.data!.length > 5
-                                        ? 5
-                                        : snapshot.data!.length,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 20),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      final propertyList =
-                                          snapshot.data!.reversed.toList();
-                                      return FeatureProductCard(
-                                        exampleImage: exampleImage,
-                                        property: propertyList[index],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ));
-            },
+                                  );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -13,26 +13,36 @@ class ShowMap extends StatefulWidget {
 }
 
 class _ShowMapState extends State<ShowMap> {
-  LatLng location = const LatLng(23.4241, 53.8478); // Default location
+  ValueNotifier<LatLng> locationNotifier =
+      ValueNotifier<LatLng>(const LatLng(25.4052, 55.5136)); // Default location
 
   @override
   void initState() {
     super.initState();
-    searchCity(widget
-        .cityName); // Search for the city name passed from the previous screen
+    searchCity(widget.cityName);
+  }
+
+  @override
+  void didUpdateWidget(covariant ShowMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.cityName != widget.cityName) {
+      searchCity(widget.cityName);
+    }
   }
 
   // Function to get coordinates from city name
   Future<void> searchCity(String city) async {
+    if (city.isEmpty) {
+      print('City name is empty');
+      return;
+    }
+
     try {
       List<Location> locations = await locationFromAddress(city);
       if (locations.isNotEmpty) {
         LatLng newLocation =
             LatLng(locations[0].latitude, locations[0].longitude);
-        setState(() {
-          location = newLocation;
-        });
-        print(locations.toString());
+        locationNotifier.value = newLocation;
       } else {
         print('City not found');
       }
@@ -44,30 +54,36 @@ class _ShowMapState extends State<ShowMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FlutterMap(
-        options:
-            MapOptions(initialCenter: location, minZoom: 5.0, maxZoom: 18.0),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-            // Plenty of other options available!
-          ),
-          MarkerLayer(
-            markers: [
-              Marker(
-                width: 80.0,
-                height: 80.0,
-                point: location,
-                child: const Icon(
-                  Icons.location_on,
-                  color: Colors.red,
-                  size: 40.0,
-                ),
+      body: ValueListenableBuilder<LatLng>(
+        valueListenable: locationNotifier,
+        builder: (context, location, child) {
+          return FlutterMap(
+            options: MapOptions(
+              initialCenter: location,
+              onPositionChanged: (camera, hasGesture) {},
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+              ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    width: 80.0,
+                    height: 80.0,
+                    point: location,
+                    child: const Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                      size: 40.0,
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }

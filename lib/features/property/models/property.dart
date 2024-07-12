@@ -57,7 +57,6 @@ class Property {
       return formatter.format(dateTime);
     }
 
-    print([jsonDecode(json['features'])]);
     return Property(
       id: json['id'],
       userId: json['user_id'],
@@ -74,7 +73,9 @@ class Property {
       bedrooms: json['bedrooms'] ?? '',
       bathrooms: json['bathrooms'] ?? '',
       propertySize: json['property_size'] ?? '',
-      features: json['features'] != [] ? [jsonDecode(json['features'])] : [],
+      features: json['features'] != []
+          ? [jsonDecode(json['features']).toString()]
+          : [],
       vedio: json['vedio'] ?? '',
       uploadDocument: json['upload_document'] ?? '',
       createdAt: formatDate(),

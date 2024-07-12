@@ -31,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
                 builder: (context) => alertDialog(okPressed: () {
                   final sessionC = Get.find<SessionController>();
                   sessionC.assignSession('');
+                  sessionC.assignVarification(false);
                   Get.offAll(() => DashBoard());
                 }),
               );

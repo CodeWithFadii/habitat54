@@ -3,10 +3,21 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_bar_widget.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
+import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GuestScreen extends StatelessWidget {
   const GuestScreen({super.key});
+
+  void launchUrlWebsite(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      launchUrl(uri);
+    } else {
+      // showCustomSnackbar('Something went wrong from our side');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +70,24 @@ class GuestScreen extends StatelessWidget {
               const SizedBox(height: 12),
               const Divider(),
               const SizedBox(height: 12),
-              const ProfileListTile(
-                title: 'Contact Us',
-                icon: Icons.phone_outlined,
+              GestureDetector(
+                onTap: () {
+                  launchUrlWebsite("https://habitat54.com/contact/");
+                },
+                child: const ProfileListTile(
+                  title: 'Contact Us',
+                  icon: Icons.phone_outlined,
+                ),
               ),
               const SizedBox(height: 20),
-              const ProfileListTile(
-                title: 'About Us',
-                icon: Icons.info_outline,
+              GestureDetector(
+                onTap: () {
+                  launchUrlWebsite("https://habitat54.com/about-us/");
+                },
+                child: const ProfileListTile(
+                  title: 'About Us',
+                  icon: Icons.info_outline,
+                ),
               ),
             ],
           ),

@@ -1,110 +1,27 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:habitat54/core/common/loader.dart';
+import 'package:habitat54/core/constants/app_constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
-import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/features/auth/controllers/auth_controller.dart';
-import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
 import 'package:pinput/pinput.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({super.key});
-
-  final authC = Get.find<AuthController>();
-  final formKey = GlobalKey<FormState>();
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          toolbarHeight: 70,
-          leading: BackButton(
-            onPressed: () {
-              Get.back();
-            },
-            color: AppColors.black,
-          ),
-        ),
-        body: SafeArea(
-          child: Obx(
-            () {
-              return authC.isLoading.value
-                  ? Loader()
-                  : Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Forgot Password',
-                            style: AppTextStyle.boldBlack30.copyWith(
-                                fontSize: 32, fontWeight: FontWeight.w900),
-                          ),
-                          SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                AuthTextField(
-                                  leadingIcon: Icons.email_outlined,
-                                  formKey: formKey,
-                                  validator: (value) {
-                                    String? error = authC.emailValidator(value);
-                                    return error;
-                                  },
-                                  text: 'Email',
-                                  controller: authC.forgetPasswordC,
-                                ),
-                                const SizedBox(height: 55),
-                                LongButton(
-                                  text: 'SEND',
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      authC.resendCode(
-                                          authC.forgetPasswordC.text,
-                                          resetPassword: true);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 100,
-                          )
-                        ],
-                      ),
-                    );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ChnagePasswordPinScreen extends StatefulWidget {
-  const ChnagePasswordPinScreen({
-    super.key,
-    required this.email,
-  });
+class PinInputScreen extends StatefulWidget {
+  const PinInputScreen({super.key, required this.email});
 
   final String email;
 
   @override
   // ignore: library_private_types_in_public_api
-  _ChnagePasswordPinScreenState createState() =>
-      _ChnagePasswordPinScreenState();
+  _PinInputScreenState createState() => _PinInputScreenState();
 }
 
-class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
+class _PinInputScreenState extends State<PinInputScreen> {
   TextEditingController? pinC;
   final authC = Get.find<AuthController>();
   final pinFormKey = GlobalKey<FormState>();
@@ -191,7 +108,7 @@ class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            widget.email,
+                            authC.signupEmailC.text.toString(),
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
@@ -264,8 +181,7 @@ class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
                     LongButton(
                         onPressed: () {
                           if (pinFormKey.currentState!.validate()) {
-                            authC.verifyCode(pinC!.text.toString(), true,
-                                email: widget.email);
+                            authC.verifyCode(pinC!.text.toString(), false);
                           }
                         },
                         text: 'Verify Email')
