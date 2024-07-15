@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Widget alertDialog(
     {required VoidCallback okPressed,
@@ -85,4 +86,13 @@ void showCustomSnackbar(String message) {
     duration: const Duration(seconds: 2),
     animationDuration: const Duration(milliseconds: 300),
   );
+}
+
+void launchUrlWebsite(String url) async {
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    launchUrl(uri);
+  } else {
+    // showCustomSnackbar('Something went wrong from our side');
+  }
 }

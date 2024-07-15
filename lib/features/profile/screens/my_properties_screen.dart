@@ -26,6 +26,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
 
   final profileC = Get.put(ProfileController());
   final homeC = Get.put(HomeController());
+  final updateC = Get.put(UpdateSellController());
 
   void refresh() {
     setState(() {});

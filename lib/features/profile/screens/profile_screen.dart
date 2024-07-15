@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_bar_widget.dart';
+import 'package:habitat54/features/profile/widgets/profile_tile_widget.dart';
 import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
@@ -52,107 +53,86 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Obx(() {
-          return profileC.user.value != null
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      profileC.user.value!.image == null
-                          ? Container(
-                              height: 60,
-                              width: 60,
-                              decoration: const BoxDecoration(
+        child: Obx(
+          () {
+            return profileC.user.value != null
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        profileC.user.value!.image == null
+                            ? Container(
+                                height: 60,
+                                width: 60,
+                                decoration: const BoxDecoration(
+                                    color: AppColors.grey,
+                                    shape: BoxShape.circle),
+                                child: const Icon(
+                                  Icons.person,
+                                  size: 30,
+                                ),
+                              )
+                            : Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
                                   color: AppColors.grey,
-                                  shape: BoxShape.circle),
-                              child: const Icon(
-                                Icons.person,
-                                size: 30,
-                              ),
-                            )
-                          : Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: AppColors.grey,
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    profileC.user.value!.image!,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      profileC.user.value!.image!,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                      const SizedBox(height: 12),
-                      Text(
-                        profileC.user.value!.name,
-                        style: AppTextStyle.boldBlack16,
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
+                        const SizedBox(height: 12),
+                        Text(
+                          profileC.user.value!.name,
+                          style: AppTextStyle.boldBlack16,
                         ),
-                        child: GestureDetector(
+                        const SizedBox(height: 20),
+                        ProfileTileWidget(
+                          icon: Icons.edit,
+                          profileC: profileC,
+                          title: 'Edit Profile',
                           onTap: () {
                             profileC.navigateToEditScreen(profileC.user.value!);
                           },
-                          child: ListTile(
-                            minLeadingWidth: 1,
-                            minTileHeight: 30,
-                            leading: const Icon(
-                              Icons.edit,
-                              size: 20,
-                              color: AppColors.black,
-                            ),
-                            title: Text(
-                              'Edit Profile',
-                              style: AppTextStyle.boldBlack16,
-                            ),
-                            trailing: const Icon(
-                              Icons.arrow_forward_ios,
-                              color: AppColors.black,
-                              size: 18,
-                            ),
-                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 5),
-                        child: GestureDetector(
+                        ProfileTileWidget(
+                          icon: Icons.home,
+                          profileC: profileC,
+                          title: 'My Properties',
                           onTap: () {
-                            Get.to(() => const MyPropertiesScreen(
-                                  isRefresh: false,
-                                ));
+                            Get.to(
+                              () => const MyPropertiesScreen(isRefresh: true),
+                            );
                           },
-                          child: ListTile(
-                            minTileHeight: 30,
-                            minLeadingWidth: 1,
-                            leading: const Icon(
-                              Icons.home,
-                              size: 22,
-                              color: AppColors.black,
-                            ),
-                            title: Text(
-                              'My Properties',
-                              style: AppTextStyle.boldBlack16,
-                            ),
-                            trailing: const Icon(
-                              Icons.arrow_forward_ios,
-                              color: AppColors.black,
-                              size: 18,
-                            ),
-                          ),
                         ),
-                      )
-                    ],
-                  ),
-                )
-              : const Loader();
-        }),
+                        ProfileTileWidget(
+                          icon: Icons.phone,
+                          profileC: profileC,
+                          title: 'Contact us',
+                          onTap: () {
+                            launchUrlWebsite("https://habitat54.com/contact/");
+                          },
+                        ),
+                        ProfileTileWidget(
+                          icon: Icons.info,
+                          profileC: profileC,
+                          title: 'About Us',
+                          onTap: () {
+                            launchUrlWebsite("https://habitat54.com/about-us/");
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                : const Loader();
+          },
+        ),
       ),
     );
   }

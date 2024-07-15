@@ -78,7 +78,7 @@ class UpdateSellStep1 extends StatelessWidget {
                       'Apartment',
                       'Villa',
                       'Office',
-                      'Commercial Shop',
+                      'Shop',
                     ],
                     onChanged: (value) {
                       sellC.propertyType.value = value!;

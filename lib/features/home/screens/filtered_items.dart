@@ -4,6 +4,7 @@ import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/property_card.dart';
 import 'package:habitat54/features/home/controllers/home_controller.dart';
+import 'package:habitat54/features/home/widgets/property_filter_widget.dart';
 import 'package:habitat54/features/property/models/property.dart';
 
 class FilteredItems extends StatefulWidget {
@@ -19,42 +20,11 @@ class _FilteredItemsState extends State<FilteredItems> {
   final exampleImage =
       'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
   List<Property> filteredList = [];
-
-  void getFilteredItems() {
-    filteredList = widget.propertyList;
-
-    if (homeC.propertyType.value.isNotEmpty) {
-      filteredList = filteredList.where((data) {
-        return data.propertyType == homeC.propertyType.value;
-      }).toList();
-    }
-    if (homeC.offerType.value.isNotEmpty) {
-      filteredList = filteredList.where((data) {
-        return data.otherType == homeC.offerType.value;
-      }).toList();
-    }
-    if (homeC.priceFrom.text.isNotEmpty) {
-      filteredList = filteredList.where((data) {
-        return int.parse(data.price) > int.parse(homeC.priceFrom.text);
-      }).toList();
-    }
-    if (homeC.priceTo.text.isNotEmpty) {
-      filteredList = filteredList.where((data) {
-        return int.parse(data.price) < int.parse(homeC.priceTo.text);
-      }).toList();
-    }
-    if (homeC.city.value.isNotEmpty) {
-      filteredList = filteredList.where((data) {
-        return data.city == homeC.city.value;
-      }).toList();
-    }
-
-    setState(() {}); // Update UI after filtering
-  }
+  bool showFilterTile = false;
 
   @override
   void initState() {
-    getFilteredItems();
+    homeC.getFilteredItems(widget.propertyList);
     super.initState();
   }
 
@@ -85,23 +55,85 @@ class _FilteredItemsState extends State<FilteredItems> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: filteredList.isEmpty
-            ? const Center(
-                child: Text('No data available'),
-              )
-            : ListView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                itemCount: filteredList.length,
-                itemBuilder: (context, index) {
-                  final property = filteredList[index];
-                  return PropertyCard(
-                    exampleImage: exampleImage,
-                    property: property,
-                  );
-                },
+      body: Obx(
+        () {
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'FILTERS',
+                              style: AppTextStyle.boldBlack16
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  showFilterTile = !showFilterTile;
+                                });
+                              },
+                              child: Icon(showFilterTile
+                                  ? Icons.arrow_drop_up
+                                  : Icons.arrow_drop_down),
+                            ),
+                          ],
+                        ),
+                        const Divider()
+                      ],
+                    ),
+                  ),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child: SizedBox(
+                      height: showFilterTile
+                          ? null
+                          : 0, // Use height 0 when collapsed
+                      child: PropertyFilterWidget(
+                        showTitle: false,
+                        homeC: homeC,
+                        propertyList: widget.propertyList,
+                        onApplyTap: () {
+                          homeC.getFilteredItems(widget.propertyList);
+                        },
+                      ),
+                    ),
+                  ),
+                  homeC.filteredList.isEmpty
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Center(
+                            child: Text('No Properties available'),
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          itemCount: homeC.filteredList.length,
+                          itemBuilder: (context, index) {
+                            final property = homeC.filteredList[index];
+                            return PropertyCard(
+                              exampleImage: exampleImage,
+                              property: property,
+                            );
+                          },
+                        ),
+                ],
               ),
+            ),
+          );
+        },
       ),
     );
   }

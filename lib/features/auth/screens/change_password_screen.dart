@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,13 +5,11 @@ import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/features/auth/controllers/auth_controller.dart';
-import 'package:habitat54/features/auth/screens/login_screen.dart';
 import 'package:habitat54/features/auth/widgets/auth_textfield.dart';
 import 'package:habitat54/features/auth/widgets/long_button.dart';
-import 'package:pinput/pinput.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
-  ChangePasswordScreen({super.key, required this.email});
+  const ChangePasswordScreen({super.key, required this.email});
   final String email;
 
   @override
@@ -65,7 +62,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Obx(() {
               return authC.isLoading.value
-                  ? Loader()
+                  ? const Loader()
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +84,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               const SizedBox(height: 10),
                               Text(
                                 widget.email,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
@@ -111,7 +108,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   return error;
                                 },
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               AuthTextField(
                                 leadingIcon: Icons.lock_outline,
                                 controller: password2C,

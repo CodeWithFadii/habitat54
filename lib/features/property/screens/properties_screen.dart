@@ -27,11 +27,14 @@ class PropertiesScreen extends StatelessWidget {
         future: homeC.getProperties(),
         builder: (context, snapshot) {
           return snapshot.connectionState == ConnectionState.waiting
-              ? const Loader()
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Loader(),
+                )
               : snapshot.hasError
                   ? const Center(
                       child: Text(
-                          '  Something went wrong, Please check your internet connection before try again'),
+                          'Something went wrong, Please check your internet connection before try again'),
                     )
                   : snapshot.data!.isEmpty
                       ? const Center(
@@ -41,7 +44,6 @@ class PropertiesScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 20, horizontal: 20),
                           itemCount: snapshot.data!.length,
-                          shrinkWrap: true,
                           itemBuilder: (context, index) {
                             final property = snapshot.data![index];
                             return PropertyCard(

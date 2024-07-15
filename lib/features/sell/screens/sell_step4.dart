@@ -20,7 +20,9 @@ class SellStep4 extends StatelessWidget {
           sellC.pageIndex(sellC.pageIndex.value - 1);
         },
         next: () {
-          sellC.uploadProperty();
+          if (!sellC.isLoading.value) {
+            sellC.uploadProperty();
+          }
         },
         nextText: 'Submit',
       ),
@@ -159,7 +161,8 @@ class SellStep4 extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final feature = sellC.additionalFeatures[index];
                           return ListTile(
-                            title: Text('${feature['name']} : ${feature['value']}'),
+                            title: Text(
+                                '${feature['name']} : ${feature['value']}'),
                             trailing: GestureDetector(
                               onTap: () =>
                                   sellC.removeAdditionalFeature(feature),

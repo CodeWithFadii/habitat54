@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:habitat54/core/common/loader.dart';
-import 'package:habitat54/core/constants/app_constants.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
@@ -29,8 +26,9 @@ class _PinInputScreenState extends State<PinInputScreen> {
   int _start = 0;
 
   void startTimer() {
+    authC.resendCode(widget.email, resetPassword: true);
     setState(() {
-      _start = 40;
+      _start = 60;
     });
 
     const oneSec = Duration(seconds: 1);
@@ -87,7 +85,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: Obx(() {
           return authC.isLoading.value
-              ? Loader()
+              ? const Loader()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +107,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
                           const SizedBox(height: 10),
                           Text(
                             authC.signupEmailC.text.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
@@ -162,6 +160,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
                               ? TextButton(
                                   onPressed: () {
                                     startTimer();
+
                                     // Resend code logic here
                                   },
                                   child: const Text(
@@ -170,7 +169,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
                                   ),
                                 )
                               : Text(
-                                  "Resend code in $_start seconds",
+                                  "Try again after $_start seconds",
                                   style:
                                       const TextStyle(color: AppColors.primary),
                                 ),

@@ -126,6 +126,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> resendCode(String email, {bool resetPassword = false}) async {
+    print('hello');
     final url = Uri.parse('${AppConstants.baseUrl}resend_code');
     Map<String, dynamic> body = {'email': email};
     final Map<String, String> headers = {

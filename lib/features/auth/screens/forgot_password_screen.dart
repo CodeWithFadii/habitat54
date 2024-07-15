@@ -37,7 +37,7 @@ class ForgetPasswordScreen extends StatelessWidget {
           child: Obx(
             () {
               return authC.isLoading.value
-                  ? Loader()
+                  ? const Loader()
                   : Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
@@ -112,8 +112,9 @@ class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
   int _start = 0;
 
   void startTimer() {
+    authC.resendCode(widget.email);
     setState(() {
-      _start = 40;
+      _start = 60;
     });
 
     const oneSec = Duration(seconds: 1);
@@ -170,7 +171,7 @@ class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: Obx(() {
           return authC.isLoading.value
-              ? Loader()
+              ? const Loader()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +193,7 @@ class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
                           const SizedBox(height: 10),
                           Text(
                             widget.email,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
@@ -253,7 +254,7 @@ class _ChnagePasswordPinScreenState extends State<ChnagePasswordPinScreen> {
                                   ),
                                 )
                               : Text(
-                                  "Resend code in $_start seconds",
+                                  "Try again after $_start seconds",
                                   style:
                                       const TextStyle(color: AppColors.primary),
                                 ),

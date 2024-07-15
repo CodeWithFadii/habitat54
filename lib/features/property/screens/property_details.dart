@@ -142,7 +142,8 @@ class PropertyDetails extends StatelessWidget {
                       shape: const Border(),
                       title: Text(
                         'ADDITIONAL FEATURES',
-                        style: AppTextStyle.boldBlack16,
+                        style: AppTextStyle.boldBlack16
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                       children: [
                         GridView.builder(
@@ -180,7 +181,8 @@ class PropertyDetails extends StatelessWidget {
                 shape: const Border(),
                 title: Text(
                   'SELLER COMMENTS',
-                  style: AppTextStyle.boldBlack16,
+                  style: AppTextStyle.boldBlack16
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
                 children: [
                   Container(
@@ -205,21 +207,18 @@ class PropertyDetails extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'RECOMMENDED',
-                          style: AppTextStyle.boldBlack16,
-                        ),
-                      ],
+                    Text(
+                      'RECOMMENDED',
+                      style: AppTextStyle.boldBlack16
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
-                    const Divider()
+                    const Divider(),
                   ],
                 ),
               ),

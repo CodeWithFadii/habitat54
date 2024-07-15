@@ -105,6 +105,7 @@ class UpdateSellController extends GetxController {
         showCustomSnackbar('Product Updated');
         isLoading(false);
       } else {
+        
         // final responseBody = await response.stream.bytesToString();
         log('HTTP Error: ${response.statusCode}');
         isLoading(false);

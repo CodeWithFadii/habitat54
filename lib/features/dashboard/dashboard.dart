@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
-import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/core/controllers/session_controller.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
 import 'package:habitat54/features/dashboard/dashboard_controller.dart';
@@ -68,14 +67,14 @@ class DashBoard extends StatelessWidget {
                 onTap: () => dashboardC.index.value = 0,
               ),
               DashboardNavItem(
-                text: 'Buy',
-                icon: Icons.shopping_cart,
+                text: 'Search',
+                icon: Icons.search,
                 isActive: dashboardC.index.value == 1,
                 onTap: () => dashboardC.index.value = 1,
               ),
               DashboardNavItem(
-                text: 'Sell',
-                icon: Icons.monetization_on,
+                text: 'Post',
+                icon: Icons.upload,
                 isActive: dashboardC.index.value == 2,
                 onTap: () => dashboardC.index.value = 2,
               ),

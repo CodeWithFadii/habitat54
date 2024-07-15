@@ -4,7 +4,6 @@ import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/core/controllers/connectivity_controller.dart';
 import 'package:habitat54/core/controllers/session_controller.dart';
-import 'package:habitat54/features/auth/screens/login_screen.dart';
 import 'package:habitat54/features/dashboard/dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -48,8 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   AppConstants.logo, // Replace with your image asset path
                   height: 220,
                 ),
-                SizedBox(height: 25),
-                Loader(),
+                const SizedBox(height: 25),
+                const Loader(),
               ],
             ),
           ),

@@ -5,19 +5,12 @@ import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class GuestScreen extends StatelessWidget {
   const GuestScreen({super.key});
 
-  void launchUrlWebsite(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      launchUrl(uri);
-    } else {
-      // showCustomSnackbar('Something went wrong from our side');
-    }
-  }
+  
+  
 
   @override
   Widget build(BuildContext context) {

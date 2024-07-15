@@ -153,7 +153,8 @@ class RecommendedDetailScreen extends StatelessWidget {
                       shape: const Border(),
                       title: Text(
                         'ADDIONAL FEATURES',
-                        style: AppTextStyle.boldBlack16,
+                        style: AppTextStyle.boldBlack16
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                       children: [
                         GridView.builder(
@@ -190,7 +191,8 @@ class RecommendedDetailScreen extends StatelessWidget {
                 shape: const Border(),
                 title: Text(
                   'SELLER COMMENTS',
-                  style: AppTextStyle.boldBlack16,
+                  style: AppTextStyle.boldBlack16
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
                 children: [
                   Container(
