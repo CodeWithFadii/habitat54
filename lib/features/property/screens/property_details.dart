@@ -5,6 +5,7 @@ import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/contact_widget.dart';
 import 'package:habitat54/core/common/feature_product_card.dart';
+import 'package:habitat54/core/utils.dart';
 // ignore: library_prefixes
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
@@ -24,25 +25,9 @@ class PropertyDetails extends StatelessWidget {
 
   final homeC = Get.find<HomeController>();
 
-  List<String> parseDataString() {
-    final dataString = property.features?.first ?? '';
-    if (dataString == '[[]]') {
-      return [];
-    }
-    if (dataString.length < 4) {
-      return [];
-    }
-    String cleanedString = dataString.substring(1, dataString.length - 1);
-    List<String> list = cleanedString.split(',');
-    for (int i = 0; i < list.length; i++) {
-      list[i] = list[i].replaceAll('"', '').trim();
-    }
-    return list;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final featuresList = parseDataString();
+    final featuresList = parseDataString(property);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kTextTabBarHeight),
@@ -139,6 +124,7 @@ class PropertyDetails extends StatelessWidget {
               featuresList.isEmpty
                   ? const SizedBox()
                   : ExpansionTile(
+                      iconColor: AppColors.black,
                       shape: const Border(),
                       title: Text(
                         'ADDITIONAL FEATURES',
@@ -178,6 +164,8 @@ class PropertyDetails extends StatelessWidget {
                       ],
                     ),
               ExpansionTile(
+                iconColor: AppColors.black,
+                initiallyExpanded: true,
                 shape: const Border(),
                 title: Text(
                   'SELLER COMMENTS',
@@ -196,6 +184,7 @@ class PropertyDetails extends StatelessWidget {
                           property.title.capitalizeFirst!,
                           style: AppTextStyle.boldBlack18,
                         ),
+                        const SizedBox(height: 10),
                         property.description == ''
                             ? const SizedBox(height: 10)
                             : const SizedBox(),
@@ -207,6 +196,40 @@ class PropertyDetails extends StatelessWidget {
                   ),
                 ],
               ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Padding(
+              //       padding: const EdgeInsets.symmetric(
+              //           horizontal: 20, vertical: 20),
+              //       child: Text(
+              //         'SELLER COMMENTS',
+              //         style: AppTextStyle.boldBlack16
+              //             .copyWith(fontWeight: FontWeight.bold),
+              //       ),
+              //     ),
+              //     Container(
+              //       padding: const EdgeInsets.symmetric(
+              //           horizontal: 20, vertical: 10),
+              //       alignment: Alignment.topLeft,
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Text(
+              //             property.title.capitalizeFirst!,
+              //             style: AppTextStyle.boldBlack18,
+              //           ),
+              //           property.description == ''
+              //               ? const SizedBox(height: 10)
+              //               : const SizedBox(),
+              //           Text(
+              //             property.description ?? '',
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

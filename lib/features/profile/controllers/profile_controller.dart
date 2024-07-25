@@ -102,9 +102,15 @@ class ProfileController extends GetxController {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       for (var i in data['products']) {
-        myPropertyList.add(
-          Property.fromJson(i),
-        );
+        try {
+          myPropertyList.add(
+            Property.fromJson(i),
+          );
+        } catch (e) {
+          log('Error converting JSON to Property: $e');
+          // Skip this item and continue with the next
+          continue;
+        }
       }
     } else {
       log(response.statusCode.toString());

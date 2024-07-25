@@ -110,7 +110,7 @@ class _FilteredItemsState extends State<FilteredItems> {
                   ),
                   homeC.filteredList.isEmpty
                       ? const Padding(
-                          padding: EdgeInsets.only(top: 50),
+                          padding: EdgeInsets.only(top: 50, bottom: 50),
                           child: Center(
                             child: Text('No Properties available'),
                           ),

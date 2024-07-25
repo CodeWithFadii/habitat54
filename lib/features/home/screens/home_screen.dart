@@ -26,11 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _refreshProperties() async {
     setState(() {});
-    homeC.propertyType.value = '';
-    homeC.offerType.value = '';
-    homeC.priceFrom.clear();
-    homeC.priceTo.clear();
-    homeC.city.value = '';
+    homeC.clearFilter();
   }
 
   @override
@@ -60,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         : snapshot.hasError
                             ? const Center(
-                                child:  Text(
+                                child: Text(
                                     'Something went wrong, Please check your internet connection before try again'),
                               )
                             : snapshot.data!.isEmpty
@@ -75,9 +71,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       PropertyFilterWidget(
                                         homeC: homeC,
-                                        propertyList: snapshot.data!,onApplyTap: () {
-                      homeC.navigateToFilterScreen(snapshot.data);
-                    },
+                                        propertyList: snapshot.data!,
+                                        onApplyTap: () {
+                                          homeC.navigateToFilterScreen(
+                                              snapshot.data);
+                                        },
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -99,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       const SizedBox(height: 20),
                                       ListView.builder(
-                                        reverse: true,
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         physics:
@@ -156,7 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
                                         height: 256,
                                         child: ListView.builder(
                                           itemCount: snapshot.data!.length > 5

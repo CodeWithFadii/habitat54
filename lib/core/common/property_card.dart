@@ -40,20 +40,53 @@ class PropertyCard extends StatelessWidget {
                           userProperty: userProperty,
                         ));
                   },
-                  child: CachedNetworkImage(
-                    height: 165,
-                    width: double.infinity,
-                    imageUrl: property.uploadImage!.isNotEmpty
-                        ? property.uploadImage!
-                        : exampleImage,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Loader(),
-                    errorWidget: (context, url, error) => const SizedBox(
-                      width: double.infinity,
-                      child: Icon(
-                        Icons.error,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      CachedNetworkImage(
+                        height: 165,
+                        width: double.infinity,
+                        imageUrl: property.uploadImage!.isNotEmpty
+                            ? property.uploadImage!
+                            : exampleImage,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Loader(),
+                        errorWidget: (context, url, error) => const SizedBox(
+                          width: double.infinity,
+                          child: Icon(
+                            Icons.error,
+                          ),
+                        ),
                       ),
-                    ),
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 8, left: 8),
+                        alignment: Alignment.bottomCenter,
+                        height: 80,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.center,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.7),
+                            ],
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: AppColors.white,
+                            ),
+                            Text(
+                              property.city,
+                              style: AppTextStyle.mediumWhite16,
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 // const StackSmallWidget(),
@@ -108,6 +141,32 @@ class PropertyCard extends StatelessWidget {
                       )
                     ],
                   ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            property.bedrooms!.isEmpty
+                                ? 'Bedrooms : 0'
+                                : 'Bedrooms : ${property.bedrooms}',
+                            style: AppTextStyle.boldBlack16,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            property.bathrooms!.isEmpty
+                                ? 'Bathrooms : 0'
+                                : 'Bathrooms: ${property.bathrooms}',
+                            style: AppTextStyle.boldBlack16,
+                          ),
+                        ],
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

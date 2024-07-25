@@ -214,6 +214,7 @@ class SellController extends GetxController {
     }
   }
 
+
   Future<void> fetchNeighborhood() async {
     final url = Uri.parse('https://app.webaotoolkit.com/api/neighborhood');
 

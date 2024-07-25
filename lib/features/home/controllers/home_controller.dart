@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
+import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/features/dashboard/dashboard.dart';
 import 'package:habitat54/features/profile/screens/my_properties_screen.dart';
 import 'package:habitat54/features/property/models/property.dart';
@@ -16,8 +17,16 @@ class HomeController extends GetxController {
   RxString propertyType = ''.obs;
   RxString offerType = ''.obs;
   RxString city = ''.obs;
+  RxList<String> featuresList = <String>[].obs;
+
   TextEditingController priceFrom = TextEditingController();
   TextEditingController priceTo = TextEditingController();
+  TextEditingController propertySizeFrom = TextEditingController();
+  TextEditingController propertySizeTo = TextEditingController();
+  TextEditingController bedroomsFrom = TextEditingController();
+  TextEditingController bedroomsTo = TextEditingController();
+  TextEditingController bathroomsFrom = TextEditingController();
+  TextEditingController bathroomsTo = TextEditingController();
 
   Future<List<Property>> getProperties() async {
     try {
@@ -73,6 +82,13 @@ class HomeController extends GetxController {
     city.value = '';
     priceFrom.clear();
     priceTo.clear();
+    featuresList.clear();
+    bedroomsFrom.clear();
+    bedroomsTo.clear();
+    bathroomsFrom.clear();
+    bathroomsTo.clear();
+    propertySizeFrom.clear();
+    propertySizeTo.clear();
   }
 
   void navigateToFilterScreen(propertyList) {
@@ -80,7 +96,14 @@ class HomeController extends GetxController {
         offerType.isNotEmpty ||
         priceFrom.text.isNotEmpty ||
         priceTo.text.isNotEmpty ||
-        city.isNotEmpty) {
+        city.isNotEmpty ||
+        featuresList.isNotEmpty ||
+        propertySizeFrom.text.isNotEmpty ||
+        propertySizeTo.text.isNotEmpty ||
+        bathroomsFrom.text.isNotEmpty ||
+        bathroomsTo.text.isNotEmpty ||
+        bedroomsFrom.text.isNotEmpty ||
+        bedroomsTo.text.isNotEmpty) {
       Get.to(() => FilteredItems(
             propertyList: propertyList,
           ));
@@ -138,6 +161,59 @@ class HomeController extends GetxController {
     if (city.value.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
         return data.city == city.value;
+      }).toList();
+    }
+    ////////////////////////////////
+    if (bedroomsFrom.text.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.bedrooms!.isEmpty
+            ? false
+            : int.parse(data.bedrooms!) > int.parse(bedroomsFrom.text);
+      }).toList();
+    }
+    if (bedroomsTo.text.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.bedrooms!.isEmpty
+            ? false
+            : int.parse(data.bedrooms!) < int.parse(bedroomsTo.text);
+      }).toList();
+    }
+    if (bathroomsFrom.text.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.bathrooms!.isEmpty
+            ? false
+            : int.parse(data.bathrooms!) > int.parse(bathroomsFrom.text);
+      }).toList();
+    }
+    if (bathroomsTo.text.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.bathrooms!.isEmpty
+            ? false
+            : int.parse(data.bathrooms!) < int.parse(bathroomsTo.text);
+      }).toList();
+    }
+    if (propertySizeFrom.text.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.propertySize!.isEmpty
+            ? false
+            : int.parse(data.propertySize!) > int.parse(propertySizeFrom.text);
+      }).toList();
+    }
+    if (propertySizeTo.text.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.propertySize!.isEmpty
+            ? false
+            : int.parse(data.propertySize!) < int.parse(propertySizeTo.text);
+      }).toList();
+    }
+    if (featuresList.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        // Assume parseDataString(data) returns a list of strings representing the features of the property
+        List<String> propertyFeatures = parseDataString(data);
+
+        // Check if the property features contain all of the user selections
+        return featuresList
+            .every((feature) => propertyFeatures.contains(feature));
       }).toList();
     }
   }

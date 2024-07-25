@@ -76,9 +76,9 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
           return snapshot.connectionState == ConnectionState.waiting
               ? const Loader()
               : snapshot.hasError
-                  ? const Center(
+                  ? Center(
                       child: Text(
-                          '  Something went wrong, Please check your internet connection before try again'),
+                          '  Something went wrong, Please check your internet connection before try again ${snapshot.error}'),
                     )
                   : snapshot.data!.isEmpty
                       ? const Center(
@@ -92,25 +92,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                           itemBuilder: (context, index) {
                             final property = snapshot.data![index];
                             List<String> featureList = [];
-                            List<String> parseDataString() {
-                              final dataString = property.features?.first ?? '';
-                              if (dataString == '[[]]') {
-                                [];
-                              }
-                              if (dataString.length < 4) {
-                                return [];
-                              }
-                              String cleanedString = dataString.substring(
-                                  2, dataString.length - 2);
-                              List<String> list = cleanedString.split(',');
-                              for (int i = 0; i < list.length; i++) {
-                                list[i] = list[i].replaceAll('"', '').trim();
-                              }
-                              return list;
-                            }
 
-                            featureList = parseDataString();
-                            print(property.uploadImage);
+                            featureList = parseDataString(property);
                             return GestureDetector(
                               onTap: () {
                                 Get.to(

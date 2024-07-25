@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/features/home/controllers/home_controller.dart';
+import 'package:habitat54/features/home/widgets/short_textfield.dart';
 import 'package:habitat54/features/property/models/property.dart';
 import 'package:habitat54/features/sell/widgets/custom_dropdown.dart';
 
@@ -16,7 +17,6 @@ class PropertyFilterWidget extends StatelessWidget {
   });
 
   final HomeController homeC;
-
   final List<Property> propertyList;
   final VoidCallback onApplyTap;
   final bool showTitle;
@@ -30,7 +30,8 @@ class PropertyFilterWidget extends StatelessWidget {
           children: [
             showTitle
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -90,55 +91,15 @@ class PropertyFilterWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Row(
                 children: [
-                  Expanded(
-                    child: TextField(
-                      controller: homeC.priceFrom,
-                      keyboardType: TextInputType.number,
-                      cursorColor: AppColors.primary,
-                      onTapOutside: (event) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: 'From',
-                        hintStyle: AppTextStyle.regularBlack14.copyWith(
-                            color: AppColors.grey,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.italic),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.black),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.black),
-                        ),
-                      ),
-                    ),
+                  ShortTextField(
+                    controller: homeC.priceFrom,
+                    hint: 'From',
                   ),
                   const SizedBox(width: 30),
-                  Expanded(
-                    child: TextField(
-                      controller: homeC.priceTo,
-                      keyboardType: TextInputType.number,
-                      cursorColor: AppColors.primary,
-                      onTapOutside: (event) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: 'To',
-                        hintStyle: AppTextStyle.regularBlack14.copyWith(
-                            color: AppColors.grey,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w600),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.black),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.black),
-                        ),
-                      ),
-                    ),
-                  ),
+                  ShortTextField(
+                    controller: homeC.priceTo,
+                    hint: 'To',
+                  )
                 ],
               ),
             ),
@@ -165,6 +126,163 @@ class PropertyFilterWidget extends StatelessWidget {
               },
               value: homeC.city.value,
             ),
+            !showTitle
+                ? ExpansionTile(
+                    iconColor: AppColors.black,
+                    shape: const Border(),
+                    title: Text(
+                      'Additional Filters',
+                      style: AppTextStyle.boldBlack16,
+                    ),
+                    tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'Bedrooms',
+                              style: AppTextStyle.boldBlack16,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            child: Row(
+                              children: [
+                                ShortTextField(
+                                  controller: homeC.bedroomsFrom,
+                                  hint: 'From',
+                                ),
+                                const SizedBox(width: 30),
+                                ShortTextField(
+                                  controller: homeC.bedroomsTo,
+                                  hint: 'To',
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'Bathrooms',
+                              style: AppTextStyle.boldBlack16,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            child: Row(
+                              children: [
+                                ShortTextField(
+                                  controller: homeC.bathroomsFrom,
+                                  hint: 'From',
+                                ),
+                                const SizedBox(width: 30),
+                                ShortTextField(
+                                  controller: homeC.bathroomsTo,
+                                  hint: 'To',
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'Property size (ft\u00b2)',
+                              style: AppTextStyle.boldBlack16,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            child: Row(
+                              children: [
+                                ShortTextField(
+                                  controller: homeC.propertySizeFrom,
+                                  hint: 'From',
+                                ),
+                                const SizedBox(width: 30),
+                                ShortTextField(
+                                  controller: homeC.propertySizeTo,
+                                  hint: 'To',
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'Features',
+                              style: AppTextStyle.boldBlack16,
+                            ),
+                          ),
+                          CustomDropDown(
+                            title: 'Features',
+                            itemsList: const [
+                              "Balcony",
+                              "Basement Parking",
+                              "Built-in Wardrobes",
+                              "Furnished",
+                              "Gym",
+                              "Kids Play Area",
+                              "Private Garden",
+                              "Security",
+                              "Semi Furnished",
+                              "Swimming Pool",
+                              "Unfurnished"
+                            ],
+                            onChanged: (value) {
+                              if (!homeC.featuresList.contains(value)) {
+                                homeC.featuresList.add(value!);
+                              }
+                            },
+                            value: homeC.propertyType.value,
+                          ),
+                          Obx(
+                            () => Padding(
+                              padding: homeC.featuresList.isNotEmpty
+                                  ? const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15)
+                                  : const EdgeInsets.all(0),
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                spacing: 8.0, // Adjust spacing between chips
+                                runSpacing: 2.0, // Adjust spacing between lines
+                                children: homeC.featuresList.map(
+                                  (feature) {
+                                    return Chip(
+                                      shape: const RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: AppColors.primary),
+                                      ),
+                                      backgroundColor: AppColors.primary,
+                                      label: Text(
+                                        feature,
+                                        style: const TextStyle(
+                                            color: AppColors.white),
+                                      ),
+                                      deleteIcon: const Icon(
+                                        Icons.clear,
+                                        size: 16,
+                                        color: AppColors.white,
+                                      ),
+                                      onDeleted: () {
+                                        homeC.featuresList.remove(feature);
+                                      },
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Row(

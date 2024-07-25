@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
+import 'package:habitat54/features/property/models/property.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -95,4 +96,20 @@ void launchUrlWebsite(String url) async {
   } else {
     // showCustomSnackbar('Something went wrong from our side');
   }
+}
+
+List<String> parseDataString(Property property) {
+  final dataString = property.features?.first ?? '';
+  if (dataString == '[[]]') {
+    return [];
+  }
+  if (dataString.length < 4) {
+    return [];
+  }
+  String cleanedString = dataString.substring(1, dataString.length - 1);
+  List<String> list = cleanedString.split(',');
+  for (int i = 0; i < list.length; i++) {
+    list[i] = list[i].replaceAll('"', '').trim();
+  }
+  return list;
 }
