@@ -26,6 +26,7 @@ class SellTextField extends StatelessWidget {
         children: [
           TextFormField(
             controller: controller,
+            
             keyboardType: keyboardType,
             maxLines: maxLines,
             cursorColor: AppColors.grey,

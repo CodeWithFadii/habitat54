@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/loader.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/core/controllers/connectivity_controller.dart';
@@ -44,7 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  AppConstants.logo, // Replace with your image asset path
+                  AppConstants.logoDetail,
+                  color: AppColors.primary,
+                  // Replace with your image asset path
                   height: 220,
                 ),
                 const SizedBox(height: 25),

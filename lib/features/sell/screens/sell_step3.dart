@@ -18,36 +18,55 @@ class SellStep3 extends StatelessWidget {
           sellC.pageIndex(sellC.pageIndex.value - 1);
         },
         next: () {
-          sellC.pageIndex(sellC.pageIndex.value + 1);
+          sellC.step3Validator();
         },
       ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SellTextField(
-                    controller: sellC.bedroomsC,
-                    label: 'Bedrooms',
-                    keyboardType: TextInputType.number,
+            Obx(() {
+              return Row(
+                children: [
+                  Expanded(
+                    child: SellTextField(
+                      controller: sellC.bedroomsC,
+                      label: 'Bedrooms',
+                      keyboardType: TextInputType.number,
+                      error: sellC.step3Validate.value
+                          ? sellC.bedroomsC.text.isNotEmpty
+                              ? false
+                              : true
+                          : false,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: SellTextField(
-                    controller: sellC.bathroomsC,
-                    label: 'Bathrooms',
-                    keyboardType: TextInputType.number,
+                  Expanded(
+                    child: SellTextField(
+                      controller: sellC.bathroomsC,
+                      label: 'Bathrooms',
+                      keyboardType: TextInputType.number,
+                      error: sellC.step3Validate.value
+                          ? sellC.bathroomsC.text.isNotEmpty
+                              ? false
+                              : true
+                          : false,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SellTextField(
-              controller: sellC.propertySize,
-              label: 'Property size (ft\u00b2)',
-              keyboardType: TextInputType.number,
-            ),
+                ],
+              );
+            }),
+            Obx(() {
+              return SellTextField(
+                controller: sellC.propertySize,
+                label: 'Property size (ft\u00b2)',
+                keyboardType: TextInputType.number,
+                error: sellC.step3Validate.value
+                    ? sellC.propertySize.text.isNotEmpty
+                        ? false
+                        : true
+                    : false,
+              );
+            }),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(

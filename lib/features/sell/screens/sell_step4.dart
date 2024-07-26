@@ -104,7 +104,7 @@ class SellStep4 extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 15),
                         child: Text(
-                          'Addional Features',
+                          'Additional Features',
                           style: AppTextStyle.boldBlack16,
                         ),
                       ),

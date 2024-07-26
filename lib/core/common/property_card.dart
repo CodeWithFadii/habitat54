@@ -44,7 +44,7 @@ class PropertyCard extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     children: [
                       CachedNetworkImage(
-                        height: 165,
+                        height: 200,
                         width: double.infinity,
                         imageUrl: property.uploadImage!.isNotEmpty
                             ? property.uploadImage!
@@ -59,7 +59,7 @@ class PropertyCard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.only(bottom: 8, left: 8),
+                        padding: const EdgeInsets.all(8),
                         alignment: Alignment.bottomCenter,
                         height: 80,
                         width: double.infinity,
@@ -74,14 +74,35 @@ class PropertyCard extends StatelessWidget {
                           ),
                         ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: AppColors.white,
+                            Wrap(
+                              spacing: 2,
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  color: AppColors.white,
+                                  size: 18,
+                                ),
+                                Text(
+                                  property.city,
+                                  style: AppTextStyle.mediumWhite14,
+                                ),
+                              ],
                             ),
-                            Text(
-                              property.city,
-                              style: AppTextStyle.mediumWhite16,
+                            Wrap(
+                              spacing: 2,
+                              children: [
+                                const Icon(
+                                  Icons.calendar_month,
+                                  color: AppColors.white,
+                                  size: 18,
+                                ),
+                                Text(
+                                  property.createdAt,
+                                  style: AppTextStyle.mediumWhite14,
+                                ),
+                              ],
                             )
                           ],
                         ),

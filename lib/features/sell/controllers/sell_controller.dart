@@ -26,6 +26,7 @@ class SellController extends GetxController {
   //Validators
   RxBool step1Validate = false.obs;
   RxBool step2Validate = false.obs;
+  RxBool step3Validate = false.obs;
   //TextEditingControllers
   TextEditingController titleC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
@@ -129,6 +130,7 @@ class SellController extends GetxController {
     neighborhood.value = '';
     step1Validate.value = false;
     step2Validate.value = false;
+    step3Validate.value = false;
     titleC.clear();
     descriptionC.clear();
     priceC.clear();
@@ -214,6 +216,15 @@ class SellController extends GetxController {
     }
   }
 
+  void step3Validator() {
+    step3Validate.value = true;
+    if (bedroomsC.text.isNotEmpty &&
+        bathroomsC.text.isNotEmpty &&
+        propertySize.text.isNotEmpty) {
+      pageIndex(pageIndex.value + 1);
+      step3Validate.value = false;
+    }
+  }
 
   Future<void> fetchNeighborhood() async {
     final url = Uri.parse('https://app.webaotoolkit.com/api/neighborhood');
