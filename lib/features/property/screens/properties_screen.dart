@@ -51,6 +51,7 @@ class PropertiesScreen extends StatelessWidget {
                         : Column(
                             children: [
                               PropertyFilterWidget(
+                                showTitle: false,
                                 homeC: homeC,
                                 propertyList: snapshot.data!,
                                 onApplyTap: () {
