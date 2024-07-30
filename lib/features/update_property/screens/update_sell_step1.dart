@@ -11,8 +11,10 @@ import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
 import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 
 class UpdateSellStep1 extends StatelessWidget {
-  const UpdateSellStep1({super.key, required this.sellC});
-  final UpdateSellController sellC;
+   UpdateSellStep1({
+    super.key,
+  });
+  final sellC = Get.find<UpdateSellController>();
 
   @override
   Widget build(BuildContext context) {

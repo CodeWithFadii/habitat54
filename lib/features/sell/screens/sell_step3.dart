@@ -55,18 +55,11 @@ class SellStep3 extends StatelessWidget {
                 ],
               );
             }),
-            Obx(() {
-              return SellTextField(
-                controller: sellC.propertySize,
-                label: 'Property size (ft\u00b2)',
-                keyboardType: TextInputType.number,
-                error: sellC.step3Validate.value
-                    ? sellC.propertySize.text.isNotEmpty
-                        ? false
-                        : true
-                    : false,
-              );
-            }),
+            SellTextField(
+              controller: sellC.propertySize,
+              label: 'Property size (ft\u00b2)',
+              keyboardType: TextInputType.number,
+            ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(

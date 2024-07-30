@@ -32,6 +32,7 @@ class UpdateSellController extends GetxController {
   //Validators
   RxBool step1Validate = false.obs;
   RxBool step2Validate = false.obs;
+  RxBool step3Validate = false.obs;
   //TextEditingControllers
   TextEditingController titleC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
@@ -105,7 +106,6 @@ class UpdateSellController extends GetxController {
         showCustomSnackbar('Product Updated');
         isLoading(false);
       } else {
-        
         // final responseBody = await response.stream.bytesToString();
         log('HTTP Error: ${response.statusCode}');
         isLoading(false);
@@ -132,6 +132,7 @@ class UpdateSellController extends GetxController {
     neighborhood.value = '';
     step1Validate.value = false;
     step2Validate.value = false;
+    step3Validate.value = false;
     titleC.clear();
     descriptionC.clear();
     priceC.clear();
@@ -159,6 +160,7 @@ class UpdateSellController extends GetxController {
     neighborhood.value = property.nieghborhood ?? '';
     step1Validate.value = false;
     step2Validate.value = false;
+    step3Validate.value = false;
     titleC.text = property.title;
     descriptionC.text = property.description ?? '';
     priceC.text = property.price;
@@ -170,6 +172,7 @@ class UpdateSellController extends GetxController {
     // additionalFeaturesList.value = property.additional;
     additionalFeatureNameC.clear();
     additionalFeatureValueC.clear();
+    
     Get.to(() => const UpdateSellScreen());
   }
 
@@ -243,6 +246,14 @@ class UpdateSellController extends GetxController {
     if (city.isNotEmpty) {
       pageIndex(pageIndex.value + 1);
       step2Validate.value = false;
+    }
+  }
+
+  void step3Validator() {
+    step3Validate.value = true;
+    if (bedroomsC.text.isNotEmpty && bathroomsC.text.isNotEmpty) {
+      pageIndex(pageIndex.value + 1);
+      step3Validate.value = false;
     }
   }
 

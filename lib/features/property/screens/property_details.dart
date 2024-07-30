@@ -81,12 +81,6 @@ class PropertyDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // StackSmallWidget(
-                        //   widget: Text(
-                        //     '1/4',
-                        //     style: AppTextStyle.mediumWhite16,
-                        //   ),
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -111,16 +105,42 @@ class PropertyDetails extends StatelessWidget {
                 ),
               ),
               DetailTileWidget(property: property),
-              ContactWidget(
-                phonePressed: () {
-                  UrlLauncher.launchUrl(Uri.parse("tel://${property.number}"));
-                },
-                messagePressed: () {
-                  UrlLauncher.launchUrl(
-                      Uri.parse("https://wa.me/${property.number}"));
-                },
-                number: property.number ?? '',
+              ExpansionTile(
+                iconColor: AppColors.black,
+                initiallyExpanded: true,
+                shape: const Border(),
+                title: Text(
+                  'SELLER DETAILS',
+                  style: AppTextStyle.boldBlack16
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                children: [
+                  Text(
+                    property.name,
+                    style: AppTextStyle.boldBlack18
+                        .copyWith(fontWeight: FontWeight.w900),
+                  ),
+                  Text(
+                    property.number ?? 'nill',
+                    style: AppTextStyle.mediumBlack16,
+                  ),
+                  const SizedBox(height: 10),
+                  property.number!.isNotEmpty
+                      ? ContactWidget(
+                          phonePressed: () {
+                            UrlLauncher.launchUrl(
+                                Uri.parse("tel://${property.number}"));
+                          },
+                          messagePressed: () {
+                            UrlLauncher.launchUrl(
+                                Uri.parse("https://wa.me/${property.number}"));
+                          },
+                          number: property.number ?? '',
+                        )
+                      : const SizedBox(),
+                ],
               ),
+
               featuresList.isEmpty
                   ? const SizedBox()
                   : ExpansionTile(

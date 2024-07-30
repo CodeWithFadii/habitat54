@@ -106,7 +106,22 @@ class PropertyCard extends StatelessWidget {
                             )
                           ],
                         ),
-                      )
+                      ),
+                      property.otherType!.isNotEmpty
+                          ? Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                color: AppColors.primary,
+                                child: Text(
+                                  property.otherType!,
+                                  style: AppTextStyle.mediumWhite14,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),

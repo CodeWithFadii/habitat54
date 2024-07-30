@@ -4,6 +4,7 @@ import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/contact_widget.dart';
 import 'package:habitat54/core/common/loader.dart';
+import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/features/property/models/property.dart';
 import 'package:habitat54/features/property/widgets/detail_tile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,25 +17,9 @@ class RecommendedDetailScreen extends StatelessWidget {
   final exampleImage =
       'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
 
-  List<String> parseDataString() {
-    final dataString = property.features?.first ?? '';
-    if (dataString == '[[]]') {
-      return [];
-    }
-    if (dataString.length < 4) {
-      return [];
-    }
-    String cleanedString = dataString.substring(1, dataString.length - 1);
-    List<String> list = cleanedString.split(',');
-    for (int i = 0; i < list.length; i++) {
-      list[i] = list[i].replaceAll('"', '').trim();
-    }
-    return list;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final featuresList = parseDataString();
+    final featuresList = parseDataString(property);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kTextTabBarHeight),
@@ -110,12 +95,6 @@ class RecommendedDetailScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // StackSmallWidget(
-                        //   widget: Text(
-                        //     '1/4',
-                        //     style: AppTextStyle.mediumWhite16,
-                        //   ),
-                        // ),
                         Row(
                           children: [
                             Container(
@@ -138,14 +117,39 @@ class RecommendedDetailScreen extends StatelessWidget {
                 ),
               ),
               DetailTileWidget(property: property),
-              ContactWidget(
-                phonePressed: () {
-                  launchUrl(Uri.parse("tel://${property.number}"));
-                },
-                messagePressed: () {
-                  launchUrl(Uri.parse("https://wa.me/${property.number}"));
-                },
-                number: property.number ?? '',
+              ExpansionTile(
+                iconColor: AppColors.black,
+                initiallyExpanded: true,
+                shape: const Border(),
+                title: Text(
+                  'SELLER DETAILS',
+                  style: AppTextStyle.boldBlack16
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                children: [
+                  Text(
+                    property.name,
+                    style: AppTextStyle.boldBlack18
+                        .copyWith(fontWeight: FontWeight.w900),
+                  ),
+                  Text(
+                    property.number ?? 'nill',
+                    style: AppTextStyle.mediumBlack16,
+                  ),
+                  const SizedBox(height: 10),
+                  property.number!.isNotEmpty
+                      ? ContactWidget(
+                          phonePressed: () {
+                            launchUrl(Uri.parse("tel://${property.number}"));
+                          },
+                          messagePressed: () {
+                            launchUrl(
+                                Uri.parse("https://wa.me/${property.number}"));
+                          },
+                          number: property.number ?? '',
+                        )
+                      : const SizedBox(),
+                ],
               ),
               featuresList.isEmpty
                   ? const SizedBox()
@@ -189,6 +193,7 @@ class RecommendedDetailScreen extends StatelessWidget {
                     ),
               ExpansionTile(
                 shape: const Border(),
+                initiallyExpanded: true,
                 title: Text(
                   'SELLER COMMENTS',
                   style: AppTextStyle.boldBlack16

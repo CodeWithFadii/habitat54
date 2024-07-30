@@ -100,6 +100,7 @@ class _FilteredItemsState extends State<FilteredItems> {
                           : 0, // Use height 0 when collapsed
                       child: PropertyFilterWidget(
                         showTitle: false,
+                        
                         homeC: homeC,
                         propertyList: widget.propertyList,
                         onApplyTap: () {

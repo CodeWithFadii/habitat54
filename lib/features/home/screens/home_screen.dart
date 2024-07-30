@@ -71,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       PropertyFilterWidget(
                                         homeC: homeC,
+                                        showAdvanceFilter: false,
                                         propertyList: snapshot.data!,
                                         onApplyTap: () {
                                           homeC.navigateToFilterScreen(
@@ -154,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
                                         height: 256,
                                         child: ListView.builder(
@@ -165,8 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               vertical: 20),
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
+                                            final reversedList = snapshot
+                                                .data!.reversed
+                                                .toList();
                                             final property =
-                                                snapshot.data![index];
+                                                reversedList[index];
                                             return FeatureProductCard(
                                               exampleImage: exampleImage,
                                               property: property,

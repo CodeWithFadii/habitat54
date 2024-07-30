@@ -7,8 +7,9 @@ import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
 import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 
 class UpdateSellStep3 extends StatelessWidget {
-  const UpdateSellStep3({super.key, required this.sellC});
-  final UpdateSellController sellC;
+   UpdateSellStep3({super.key});
+
+  final sellC = Get.find<UpdateSellController>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,31 +19,43 @@ class UpdateSellStep3 extends StatelessWidget {
           sellC.pageIndex(sellC.pageIndex.value - 1);
         },
         next: () {
-          sellC.pageIndex(sellC.pageIndex.value + 1);
+          sellC.step3Validator();
         },
       ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SellTextField(
-                    controller: sellC.bedroomsC,
-                    label: 'Bedrooms',
-                    keyboardType: TextInputType.number,
+            Obx(() {
+              return Row(
+                children: [
+                  Expanded(
+                    child: SellTextField(
+                      controller: sellC.bedroomsC,
+                      label: 'Bedrooms',
+                      keyboardType: TextInputType.number,
+                      error: sellC.step3Validate.value
+                          ? sellC.bedroomsC.text.isNotEmpty
+                              ? false
+                              : true
+                          : false,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: SellTextField(
-                    controller: sellC.bathroomsC,
-                    label: 'Bathrooms',
-                    keyboardType: TextInputType.number,
+                  Expanded(
+                    child: SellTextField(
+                      controller: sellC.bathroomsC,
+                      label: 'Bathrooms',
+                      keyboardType: TextInputType.number,
+                      error: sellC.step3Validate.value
+                          ? sellC.bathroomsC.text.isNotEmpty
+                              ? false
+                              : true
+                          : false,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
             SellTextField(
               controller: sellC.propertySize,
               label: 'Property size (ft\u00b2)',

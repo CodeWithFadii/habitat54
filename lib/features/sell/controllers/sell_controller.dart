@@ -219,8 +219,7 @@ class SellController extends GetxController {
   void step3Validator() {
     step3Validate.value = true;
     if (bedroomsC.text.isNotEmpty &&
-        bathroomsC.text.isNotEmpty &&
-        propertySize.text.isNotEmpty) {
+        bathroomsC.text.isNotEmpty) {
       pageIndex(pageIndex.value + 1);
       step3Validate.value = false;
     }

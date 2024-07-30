@@ -13,13 +13,14 @@ class PropertyFilterWidget extends StatelessWidget {
     required this.homeC,
     required this.propertyList,
     required this.onApplyTap,
-    this.showTitle = true,
+    this.showTitle = true,  this.showAdvanceFilter = true,
   });
 
   final HomeController homeC;
   final List<Property> propertyList;
   final VoidCallback onApplyTap;
   final bool showTitle;
+  final bool showAdvanceFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +127,7 @@ class PropertyFilterWidget extends StatelessWidget {
               },
               value: homeC.city.value,
             ),
-            !showTitle
+            showAdvanceFilter
                 ? ExpansionTile(
                     iconColor: AppColors.black,
                     shape: const Border(),
@@ -134,7 +135,7 @@ class PropertyFilterWidget extends StatelessWidget {
                       'Additional Filters',
                       style: AppTextStyle.boldBlack16,
                     ),
-                    tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                    tilePadding: const EdgeInsets.symmetric(horizontal: 20),
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +283,7 @@ class PropertyFilterWidget extends StatelessWidget {
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Row(

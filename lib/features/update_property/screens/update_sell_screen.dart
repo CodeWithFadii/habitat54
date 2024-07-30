@@ -18,12 +18,12 @@ class UpdateSellScreen extends StatefulWidget {
 
 class _UpdateSellScreenState extends State<UpdateSellScreen> {
   final profilec = Get.put(ProfileController());
-  static final sellC = Get.put(UpdateSellController());
+  static final sellC = Get.find<UpdateSellController>();
   List pages = [
-    UpdateSellStep1(sellC: sellC),
-    UpdateSellStep2(sellC: sellC),
-    UpdateSellStep3(sellC: sellC),
-    UpdateSellStep4(sellC: sellC),
+    UpdateSellStep1(),
+    UpdateSellStep2(),
+    UpdateSellStep3(),
+    UpdateSellStep4(),
   ];
 
   @override

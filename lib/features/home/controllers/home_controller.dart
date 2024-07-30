@@ -46,7 +46,7 @@ class HomeController extends GetxController {
             continue;
           }
         }
-        return propertyList; // Return the list if successful
+        return propertyList.reversed.toList(); // Return the list if successful
       } else {
         // Handle other status codes or errors
         log('Error: ${response.statusCode}');
