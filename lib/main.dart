@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/features/auth/screens/splash_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main()async {
+  await dotenv.load(fileName: 'assets/.env');
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY']!;
+  await Stripe.instance.applySettings();
+  runApp(const MyApp()); 
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

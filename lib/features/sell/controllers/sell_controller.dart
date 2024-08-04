@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitat54/core/common/property_payment.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/features/profile/controllers/profile_controller.dart';
 import 'package:habitat54/features/profile/screens/my_properties_screen.dart';
@@ -91,6 +92,7 @@ class SellController extends GetxController {
       });
 
       // Send the request
+
       final response = await request.send();
       isLoading(false);
       // Handle the response
@@ -116,6 +118,13 @@ class SellController extends GetxController {
       log('Exception: $e');
       isLoading(false);
     }
+  }
+
+  Future<bool> makePayment(context) async {
+    isLoading(true);
+    bool isPaymentSuccess = await PropertyPayment().makePayment(context);
+    isLoading(false);
+    return isPaymentSuccess;
   }
 
   void updateValues() {
@@ -218,8 +227,7 @@ class SellController extends GetxController {
 
   void step3Validator() {
     step3Validate.value = true;
-    if (bedroomsC.text.isNotEmpty &&
-        bathroomsC.text.isNotEmpty) {
+    if (bedroomsC.text.isNotEmpty && bathroomsC.text.isNotEmpty) {
       pageIndex(pageIndex.value + 1);
       step3Validate.value = false;
     }
