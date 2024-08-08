@@ -130,13 +130,13 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                                         Wrap(
                                           children: [
                                             Text(
-                                              'Property Type: ',
+                                              'Status: ',
                                               style: AppTextStyle.mediumBlack16
                                                   .copyWith(
                                                       color: AppColors.grey),
                                             ),
                                             Text(
-                                              property.propertyType,
+                                              property.status.capitalize!,
                                               style: AppTextStyle.mediumBlack16,
                                               overflow: TextOverflow.ellipsis,
                                             ),

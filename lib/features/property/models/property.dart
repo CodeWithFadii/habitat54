@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class Property {
   String? bedrooms;
   String? bathrooms;
   String? propertySize;
+  String status;
   List<String>? features;
   String? vedio;
   String? uploadDocument;
@@ -26,6 +28,8 @@ class Property {
   List<Additional>? additional;
 
   Property({
+    List<String>? features,
+    List<Additional>? additional,
     required this.id,
     required this.userId,
     required this.name,
@@ -41,12 +45,11 @@ class Property {
     this.bedrooms,
     this.bathrooms,
     this.propertySize,
-    List<String>? features,
+    required this.status,
     required this.vedio,
     this.uploadDocument,
     required this.createdAt,
     required this.updatedAt,
-    List<Additional>? additional,
   })  : features = features ?? [],
         additional = additional ?? [];
 
@@ -85,6 +88,7 @@ class Property {
               .map((item) => Additional.fromJson(item))
               .toList()
           : [],
+      status: json['status'],
     );
   }
 }

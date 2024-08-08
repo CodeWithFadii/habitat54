@@ -43,6 +43,7 @@ class CustomDropDown extends StatelessWidget {
               value: value.isNotEmpty ? value : null, // Currently selected item
               isExpanded: true, // Make the dropdown button expand to full width
               dropdownColor: Colors.white,
+              iconDisabledColor: AppColors.black,
 
               onChanged: onChanged,
               underline: const SizedBox(),

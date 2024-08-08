@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
+import 'package:habitat54/core/common/neighborhood_delegate.dart';
+import 'package:habitat54/core/common/neighborhood_select_widget.dart';
 import 'package:habitat54/features/home/controllers/home_controller.dart';
 import 'package:habitat54/features/home/widgets/short_textfield.dart';
 import 'package:habitat54/features/property/models/property.dart';
@@ -149,22 +151,18 @@ class PropertyFilterWidget extends StatelessWidget {
                               style: AppTextStyle.boldBlack16,
                             ),
                           ),
-                          CustomDropDown(
-                            title: 'Neighborhood',
-                            itemsList: homeC.neighborhoodList.isNotEmpty
-                                ? homeC.neighborhoodList
-                                : [
-                                    'Al Zahiyah',
-                                    'Khalifa City',
-                                    'Downtown Dubai',
-                                    'Dubai Marina',
-                                    'Al Taawun',
-                                    'Abu Shagara',
-                                  ],
-                            onChanged: (value) {
-                              homeC.neighborhood.value = value!;
+                          NeighborhoodSelectWidget(
+                            onPressed: () async {
+                              final String selected = await showSearch(
+                                context: context,
+                                delegate: NeighborhoodDelegate(
+                                    neighborhoodList: homeC.neighborhoodList),
+                              );
+                              if (selected.isNotEmpty) {
+                                homeC.neighborhood.value = selected;
+                              }
                             },
-                            value: homeC.neighborhood.value,
+                            neighborhood: homeC.neighborhood.value,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),

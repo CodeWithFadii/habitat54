@@ -35,20 +35,22 @@ class HomeController extends GetxController {
       List<Property> propertyList = [];
       final url = Uri.parse('${AppConstants.baseUrl}allproducts');
       final response = await http.get(url);
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         for (var i in data['allproducts']) {
           try {
-            propertyList.add(
-              Property.fromJson(i),
-            );
+            Property property = Property.fromJson(i);
+            if (property.status == 'active') {
+              propertyList.add(property);
+            }
           } catch (e) {
             log('Error converting JSON to Property: $e');
             // Skip this item and continue with the next
             continue;
           }
         }
-        return propertyList.reversed.toList(); // Return the list if successful
+        return propertyList.reversed.toList(); // Return the filtered list
       } else {
         // Handle other status codes or errors
         log('Error: ${response.statusCode}');
