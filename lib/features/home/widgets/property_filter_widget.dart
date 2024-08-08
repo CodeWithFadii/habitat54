@@ -13,7 +13,8 @@ class PropertyFilterWidget extends StatelessWidget {
     required this.homeC,
     required this.propertyList,
     required this.onApplyTap,
-    this.showTitle = true,  this.showAdvanceFilter = true,
+    this.showTitle = true,
+    this.showAdvanceFilter = true,
   });
 
   final HomeController homeC;
@@ -141,6 +142,30 @@ class PropertyFilterWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'Neighborhood',
+                              style: AppTextStyle.boldBlack16,
+                            ),
+                          ),
+                          CustomDropDown(
+                            title: 'Neighborhood',
+                            itemsList: homeC.neighborhoodList.isNotEmpty
+                                ? homeC.neighborhoodList
+                                : [
+                                    'Al Zahiyah',
+                                    'Khalifa City',
+                                    'Downtown Dubai',
+                                    'Dubai Marina',
+                                    'Al Taawun',
+                                    'Abu Shagara',
+                                  ],
+                            onChanged: (value) {
+                              homeC.neighborhood.value = value!;
+                            },
+                            value: homeC.neighborhood.value,
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(

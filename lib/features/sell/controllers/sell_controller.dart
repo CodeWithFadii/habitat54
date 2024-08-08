@@ -277,6 +277,7 @@ class SellController extends GetxController {
 
         // Update state with names
         cityList.addAll(names);
+        
       } else {
         throw Exception('Failed to load data');
       }

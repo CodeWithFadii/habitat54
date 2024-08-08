@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/features/auth/screens/splash_screen.dart';

@@ -13,10 +13,12 @@ import 'package:habitat54/features/home/screens/filtered_items.dart';
 class HomeController extends GetxController {
   RxBool isLoading = false.obs;
   RxList<String> cityList = <String>[].obs;
+  RxList<String> neighborhoodList = <String>[].obs;
   RxList<Property> filteredList = <Property>[].obs;
   RxString propertyType = ''.obs;
   RxString offerType = ''.obs;
   RxString city = ''.obs;
+  RxString neighborhood = ''.obs;
   RxList<String> featuresList = <String>[].obs;
 
   TextEditingController priceFrom = TextEditingController();
@@ -80,6 +82,7 @@ class HomeController extends GetxController {
     propertyType.value = '';
     offerType.value = '';
     city.value = '';
+    neighborhood.value = '';
     priceFrom.clear();
     priceTo.clear();
     featuresList.clear();
@@ -97,6 +100,7 @@ class HomeController extends GetxController {
         priceFrom.text.isNotEmpty ||
         priceTo.text.isNotEmpty ||
         city.isNotEmpty ||
+        neighborhood.isNotEmpty ||
         featuresList.isNotEmpty ||
         propertySizeFrom.text.isNotEmpty ||
         propertySizeTo.text.isNotEmpty ||
@@ -127,6 +131,35 @@ class HomeController extends GetxController {
 
         // Update state with names
         cityList.addAll(names);
+        // log(cityList.toString());
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
+
+  Future<void> fetchNeighborhood() async {
+    final url = Uri.parse('https://app.webaotoolkit.com/api/neighborhood');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Parse JSON
+        final data = jsonDecode(response.body);
+
+        // Extract names
+        List<dynamic> neighborhoodData = data['neighborhood'];
+        List<String> names = neighborhoodData
+            .map((neighbor) => neighbor['name'].toString())
+            .toList();
+
+        neighborhoodList.addAll(names);
+        // log(neighborhoodList.toString());
+
+        // Update state with names
       } else {
         throw Exception('Failed to load data');
       }
@@ -164,6 +197,13 @@ class HomeController extends GetxController {
       }).toList();
     }
     ////////////////////////////////
+    if (neighborhood.value.isNotEmpty) {
+      filteredList.value = filteredList.where((data) {
+        return data.nieghborhood!.isEmpty
+            ? false
+            : data.nieghborhood == neighborhood.value;
+      }).toList();
+    }
     if (bedroomsFrom.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
         return data.bedrooms!.isEmpty
@@ -221,6 +261,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     fetchCity();
+    fetchNeighborhood();
     // getProperties();
     super.onInit();
   }
