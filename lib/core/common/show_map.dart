@@ -33,7 +33,6 @@ class _ShowMapState extends State<ShowMap> {
   // Function to get coordinates from city name
   Future<void> searchCity(String city) async {
     if (city.isEmpty) {
-      print('City name is empty');
       return;
     }
 
@@ -44,10 +43,11 @@ class _ShowMapState extends State<ShowMap> {
             LatLng(locations[0].latitude, locations[0].longitude);
         locationNotifier.value = newLocation;
       } else {
-        print('City not found');
+     
       }
+    // ignore: empty_catches
     } catch (e) {
-      print('Error: $e');
+    
     }
   }
 

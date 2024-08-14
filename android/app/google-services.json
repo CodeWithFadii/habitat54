@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238372322824",
+    "project_id": "habitat54-1a4c8",
+    "storage_bucket": "habitat54-1a4c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238372322824:android:30e91c3640c273fadd5bbd",
+        "android_client_info": {
+          "package_name": "com.habitat54.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgxQ5C1K3jghL9QjqkwFv3mV5x3aOkQng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -44,5 +44,23 @@
     <true/>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to select images for your profile and uploading your property.</string>
+    
+     <!-- facebook -->
+     
+    <key>CFBundleURLTypes</key>
+    <array>
+    <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+        <string>fb1230897244617434</string>
+    </array>
+    </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>1230897244617434</string>
+    <key>FacebookClientToken</key>
+    <string>65ff0c1b243603660c687e7bcd2182d2</string>
+    <key>FacebookDisplayName</key>
+    <string>Habitat54</string>
 </dict>
 </plist>

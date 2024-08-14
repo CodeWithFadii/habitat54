@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
@@ -82,17 +83,13 @@ class EditProfileScreen extends StatelessWidget {
                                           size: 30,
                                         ),
                                       )
-                                    : Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.grey,
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                profileC.user.value!.image!),
-                                          ),
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: CachedNetworkImage(
+                                          height: 60,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                          imageUrl: profileC.user.value!.image!,
                                         ),
                                       ),
                           ),
@@ -120,8 +117,8 @@ class EditProfileScreen extends StatelessWidget {
                             },
                           ),
                           Container(
-                            padding:
-                                const EdgeInsets.only(left: 40, top: 20, bottom: 10),
+                            padding: const EdgeInsets.only(
+                                left: 40, top: 20, bottom: 10),
                             child: DropdownButton<String>(
                               hint: const Text(
                                 'Agent',

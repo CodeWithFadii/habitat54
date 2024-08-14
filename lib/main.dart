@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -5,11 +6,15 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:habitat54/features/auth/screens/splash_screen.dart';
+import 'package:habitat54/firebase_options.dart';
 
 void main() async {
   await dotenv.load(fileName: 'assets/.env');
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY']!;
   await Stripe.instance.applySettings();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -29,6 +34,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.white,
         appBarTheme: const AppBarTheme(
           color: AppColors.white,
+          scrolledUnderElevation: 0.0,
         ),
       ),
       home: const SplashScreen(),

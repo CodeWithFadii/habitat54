@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Habitat54</string>
+    <string name="facebook_app_id">1230897244617434</string>
+    <string name="fb_login_protocol_scheme">fb1230897244617434</string>
+    <string name="facebook_client_token">65ff0c1b243603660c687e7bcd2182d2</string>
+</resources>

@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:habitat54/core/constants/app_constants.dart';
 import 'package:habitat54/core/utils.dart';
 import 'package:habitat54/core/controllers/session_controller.dart';
 import 'package:habitat54/features/auth/models/auth_model.dart';
+import 'package:habitat54/features/auth/screens/additional_information_screen.dart';
 import 'package:habitat54/features/auth/screens/change_password_screen.dart';
 import 'package:habitat54/features/auth/screens/forgot_password_screen.dart';
 import 'package:habitat54/features/auth/screens/login_screen.dart';
@@ -23,8 +27,153 @@ class AuthController extends GetxController {
   TextEditingController signupPasswordC = TextEditingController();
   TextEditingController signupNameC = TextEditingController();
   TextEditingController forgetPasswordC = TextEditingController();
+  TextEditingController additinalPhoneC = TextEditingController();
   TextEditingController pinC = TextEditingController();
   RxBool hidePassword = true.obs;
+  final googleSignIn = GoogleSignIn();
+  final auth = FirebaseAuth.instance;
+
+  Future signInWithGoogle({required bool login}) async {
+    try {
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        return null;
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      isLoading(true);
+      final UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+      final user = userCredential.user;
+      if (user != null) {
+        if (login) {
+          socielLogin(user);
+        } else {
+          Get.to(() => AdditionalInformationScreen(user: user));
+        }
+      }
+      isLoading(false);
+    } on FirebaseAuthException catch (e) {
+      isLoading(false);
+      showCustomSnackbar('Something went wrong please try again ${e.message}');
+      return null;
+    } catch (e) {
+      isLoading(false);
+      showCustomSnackbar('Something went wrong please try again}');
+      return null;
+    }
+  }
+
+  Future<void> signInWithFacebook({required bool login}) async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      if (result.status == LoginStatus.success) {
+        isLoading(true);
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.tokenString);
+
+        UserCredential userCredential =
+            await auth.signInWithCredential(credential);
+        final user = userCredential.user;
+        if (user != null) {
+          if (login) {
+            socielLogin(user);
+          } else {
+            Get.to(() => AdditionalInformationScreen(user: user));
+          }
+        }
+        isLoading(false);
+      }
+    } on Exception catch (e) {
+      isLoading(false);
+      showCustomSnackbar(
+          'Something went wrong please try again ${e.toString()}');
+    }
+  }
+
+  Future<void> socielSignin(User user) async {
+    final url = Uri.parse('${AppConstants.baseUrl}social_login');
+    final Map<String, dynamic> requestBody = {
+      'image': user.photoURL,
+      'name': user.displayName,
+      'email': user.email,
+      'number': additinalPhoneC.text.toString(),
+      'role': role.value.toString(),
+      'social_key': user.uid.toString(),
+    };
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      isLoading(true);
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(requestBody),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final sessionC = Get.find<SessionController>();
+        sessionC.assignSession(data['user']['id'].toString());
+        sessionC.assignVarification(true);
+        sessionC.assignSociel(true);
+        Get.offAll(() => DashBoard());
+        isLoading(false);
+      } else {
+        isLoading(false);
+        showCustomSnackbar(
+            'Try again with a different method');
+      }
+    } catch (e) {
+      isLoading(false);
+      showCustomSnackbar('Something went wrong please again!');
+    }
+  }
+
+  Future<void> socielLogin(User user) async {
+    final url = Uri.parse('${AppConstants.baseUrl}social_login');
+  
+    final Map<String, dynamic> requestBody = {
+      'image': user.photoURL,
+      'name': user.displayName,
+      'email': user.email,
+      // 'number': additinalPhoneC.text.toString(),
+      // 'role': role.value.toString(),
+      'social_key': user.uid.toString(),
+    };
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      isLoading(true);
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(requestBody),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final sessionC = Get.find<SessionController>();
+        sessionC.assignSession(data['user']['id'].toString());
+        sessionC.assignVarification(true);
+        sessionC.assignSociel(true);
+        Get.offAll(() => DashBoard());
+        isLoading(false);
+      } else {
+        isLoading(false);
+        showCustomSnackbar(
+            'Something went wrong please again! ${response.body}');
+      }
+    } catch (e) {
+      isLoading(false);
+      showCustomSnackbar('Something went wrong please again!');
+    }
+  }
 
   void signupUser() async {
     final url = Uri.parse('${AppConstants.baseUrl}add_user');
@@ -126,7 +275,6 @@ class AuthController extends GetxController {
   }
 
   Future<void> resendCode(String email, {bool resetPassword = false}) async {
-    print('hello');
     final url = Uri.parse('${AppConstants.baseUrl}resend_code');
     Map<String, dynamic> body = {'email': email};
     final Map<String, String> headers = {

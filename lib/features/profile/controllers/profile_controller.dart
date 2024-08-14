@@ -12,26 +12,23 @@ import 'package:habitat54/core/utils.dart';
 
 class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
-  var user = Rx<User?>(null);
+  var user = Rx<UserModel?>(null);
   RxString profilePic = ''.obs;
   RxString roles = 'Agent'.obs;
   TextEditingController nameC = TextEditingController();
   TextEditingController phoneC = TextEditingController();
 
-  Future<void> getUser() async {
+  Future getUser() async {
     final sessionC = Get.find<SessionController>();
     final url = Uri.parse("${AppConstants.baseUrl}users/${sessionC.id.value}");
-
     try {
-      if (sessionC.id.value.isNotEmpty) {
-        final response = await http.get(url);
-        if (response.statusCode == 200) {
-          final data = json.decode(response.body);
-          user.value = User.fromJson(data['user']);
-          log(data.toString());
-        } else {
-          throw Exception('Failed to load user');
-        }
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        user.value = UserModel.fromJson(data['user']);
+        log(data.toString());
+      } else {
+        throw Exception('Failed to load user');
       }
     } catch (e) {
       // Handle errors here, for example show snackbar
@@ -75,7 +72,7 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         final responseData = await response.stream.bytesToString();
         final data = json.decode(responseData);
-        user.value = User.fromJson(data['user']);
+        user.value = UserModel.fromJson(data['user']);
         Get.back();
         log(data.toString());
       } else if (response.statusCode == 422) {
@@ -83,7 +80,7 @@ class ProfileController extends GetxController {
         final data = json.decode(responseData);
         showCustomSnackbar(data['message']);
       } else {
-        print(response.statusCode.toString());
+        log(response.statusCode.toString());
         showCustomSnackbar('Something went wrong, please try again');
       }
     } on Exception catch (e) {
@@ -118,7 +115,7 @@ class ProfileController extends GetxController {
     return myPropertyList;
   }
 
-  void navigateToEditScreen(User user) {
+  void navigateToEditScreen(UserModel user) {
     nameC.text = user.name;
     phoneC.text = user.number;
     roles.value = user.role;
@@ -167,6 +164,8 @@ class ProfileController extends GetxController {
       return 'Only numbers allowed in this field';
     }
   }
+
+  
 
   @override
   void onInit() async {

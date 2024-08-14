@@ -11,6 +11,7 @@ import 'package:habitat54/core/utils.dart';
 
 class SellController extends GetxController {
   RxBool isLoading = false.obs;
+  RxBool payment = false.obs;
   RxInt pageIndex = 0.obs;
   RxList<String> imagesList = <String>[].obs;
   RxString document = ''.obs;
@@ -39,18 +40,16 @@ class SellController extends GetxController {
   TextEditingController youtubeLink = TextEditingController();
   TextEditingController additionalFeatureNameC = TextEditingController();
   TextEditingController additionalFeatureValueC = TextEditingController();
-  final profileC = Get.find<ProfileController>();
 
   Future<void> uploadProperty() async {
     final url = Uri.parse('${AppConstants.baseUrl}add_products');
-
+    final profileC = Get.put(ProfileController());
     try {
       // Create multipart request
       isLoading(true);
       final request = http.MultipartRequest('POST', url);
 
       // Add fields to the request
-
       request.fields['user_id'] = profileC.user.value!.id.toString();
       request.fields['name'] = profileC.user.value?.name ?? "";
       request.fields['number'] = profileC.user.value?.number ?? "";
@@ -68,8 +67,6 @@ class SellController extends GetxController {
 
       request.fields['features'] = featuresList.toString();
       // jsonEncode(featuresList.map((feature) => feature).toList());
-
-      print(jsonEncode(additionalFeatures));
 
       request.fields['additional_data'] =
           jsonEncode(additionalFeatures.map((feature) => feature).toList());
@@ -101,22 +98,40 @@ class SellController extends GetxController {
         final data = jsonDecode(responseBody);
         log('Response: $data');
         updateValues();
+        payment.value = false;
         Get.to(() => const MyPropertiesScreen(isRefresh: true));
         showCustomSnackbar('Property Uploaded');
 
         isLoading(false);
       } else if (response.statusCode == 500) {
+        payment.value = false;
         showCustomSnackbar('Property Uploaded');
         updateValues();
         Get.to(() => const MyPropertiesScreen(isRefresh: true));
       } else {
         // final responseBody = await response.stream.bytesToString();
         log('HTTP Error: ${response.statusCode}');
+        showCustomSnackbar('Something went wrong while posting');
         isLoading(false);
       }
     } catch (e) {
       log('Exception: $e');
       isLoading(false);
+    }
+  }
+
+  void upload(context) async {
+    if (!isLoading.value) {
+      if (payment.value) {
+        uploadProperty();
+      } else {
+        isLoading.value = true;
+        payment.value = await PropertyPayment().makePayment(context);
+        isLoading.value = false;
+        if (payment.value) {
+          uploadProperty();
+        }
+      }
     }
   }
 
@@ -277,7 +292,6 @@ class SellController extends GetxController {
 
         // Update state with names
         cityList.addAll(names);
-        
       } else {
         throw Exception('Failed to load data');
       }

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:habitat54/core/common/app_colors.dart';
 import 'package:habitat54/core/common/app_textstyle.dart';
 import 'package:habitat54/core/common/loader.dart';
-import 'package:habitat54/core/common/property_payment.dart';
 import 'package:habitat54/features/sell/controllers/sell_controller.dart';
 import 'package:habitat54/features/sell/widgets/previous_next_button.dart';
 import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
@@ -21,15 +20,7 @@ class SellStep4 extends StatelessWidget {
           sellC.pageIndex(sellC.pageIndex.value - 1);
         },
         next: () async {
-          if (!sellC.isLoading.value) {
-            sellC.isLoading.value = true;
-            bool isPaymentSuccess =
-                await PropertyPayment().makePayment(context);
-            sellC.isLoading.value = false;
-            if (isPaymentSuccess) {
-              sellC.uploadProperty();
-            }
-          }
+          sellC.upload(context);
         },
         nextText: 'Submit',
       ),

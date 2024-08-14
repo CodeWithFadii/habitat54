@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:habitat54/core/common/app_bar_widget.dart';
 import 'package:habitat54/features/profile/widgets/profile_tile_widget.dart';
 import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
@@ -29,10 +32,13 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => alertDialog(okPressed: () {
+                builder: (context) => alertDialog(okPressed: () async {
                   final sessionC = Get.find<SessionController>();
                   sessionC.assignSession('');
                   sessionC.assignVarification(false);
+                  sessionC.assignSociel(false);
+                  await GoogleSignIn().signOut();
+                  await FacebookAuth.instance.logOut();
                   Get.offAll(() => DashBoard());
                 }),
               );
@@ -73,18 +79,14 @@ class ProfileScreen extends StatelessWidget {
                                   size: 30,
                                 ),
                               )
-                            : Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  color: AppColors.grey,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      profileC.user.value!.image!,
-                                    ),
-                                  ),
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: CachedNetworkImage(
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                  imageUrl: profileC.user.value!.image!,
+                                  placeholder: (context, url) => const Loader(),
                                 ),
                               ),
                         const SizedBox(height: 12),
