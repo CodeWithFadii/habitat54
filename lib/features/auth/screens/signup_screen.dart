@@ -165,9 +165,9 @@ class SignupScreen extends StatelessWidget {
                                     await GoogleSignIn().signOut();
                                     authC.signInWithGoogle(login: false);
                                   },
-                                  facebook: () {
-                                    authC.signInWithFacebook(login: false);
-                                  },
+                                  // facebook: () {
+                                  //   authC.signInWithFacebook(login: false);
+                                  // },
                                 ),
                                 const SizedBox(height: 15),
                                 LongButton(

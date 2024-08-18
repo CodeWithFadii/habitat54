@@ -7,10 +7,10 @@ class AuthSocielButton extends StatelessWidget {
   const AuthSocielButton({
     super.key,
     required this.google,
-    required this.facebook,
+    // required this.facebook,
   });
   final VoidCallback google;
-  final VoidCallback facebook;
+  // final VoidCallback facebook;
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +51,19 @@ class AuthSocielButton extends StatelessWidget {
                 child: Image.asset(AppConstants.google),
               ),
             ),
-            GestureDetector(
-              onTap: facebook,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xfff4f4f4),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Image.asset(AppConstants.facebook),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: facebook,
+            //   child: Container(
+            //     padding: const EdgeInsets.all(12),
+            //     margin:
+            //         const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //     decoration: BoxDecoration(
+            //       color: const Color(0xfff4f4f4),
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //     child: Image.asset(AppConstants.facebook),
+            //   ),
+            // ),
           ],
         ),
       ],
