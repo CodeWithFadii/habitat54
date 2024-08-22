@@ -13,7 +13,7 @@ class Property {
   String price;
   String propertyType;
   String? otherType;
-  String? uploadImage;
+  List<String>? uploadImage; // Change to List<String> to handle multiple images
   String city;
   String? nieghborhood;
   String? bedrooms;
@@ -60,6 +60,14 @@ class Property {
       return formatter.format(dateTime);
     }
 
+    // Parse uploadImage JSON string to List<String>
+    List<String>? parseImages(String? imagesJson) {
+      if (imagesJson != null && imagesJson.isNotEmpty) {
+        return List<String>.from(jsonDecode(imagesJson));
+      }
+      return [];
+    }
+
     return Property(
       id: json['id'],
       userId: json['user_id'],
@@ -70,7 +78,7 @@ class Property {
       price: json['price'] ?? '',
       propertyType: json['property_type'] ?? '',
       otherType: json['Other_type'] ?? '',
-      uploadImage: json['upload_image'] ?? '',
+      uploadImage: parseImages(json['upload_image']), // Parse images
       city: json['city'] ?? '',
       nieghborhood: json['nieghborhood'] ?? '',
       bedrooms: json['bedrooms'] ?? '',

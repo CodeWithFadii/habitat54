@@ -49,8 +49,8 @@ class FeatureProductCard extends StatelessWidget {
                     child: CachedNetworkImage(
                       width: double.infinity,
                       height: 160,
-                      imageUrl: property.uploadImage!.isNotEmpty
-                          ? property.uploadImage!
+                      imageUrl: property.uploadImage![0].isNotEmpty
+                          ? property.uploadImage![0]
                           : exampleImage,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => const Loader(),

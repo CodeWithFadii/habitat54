@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -115,7 +117,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                                         width: 90,
                                         height: double.infinity,
                                         fit: BoxFit.cover,
-                                        imageUrl: property.uploadImage!,
+                                        imageUrl: property.uploadImage![0],
                                         placeholder: (context, url) =>
                                             const Loader(),
                                       ),

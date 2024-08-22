@@ -44,6 +44,8 @@
     <true/>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to select images for your profile and uploading your property.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>For User can scan his card for payment.</string>
     
      <!-- facebook -->
      

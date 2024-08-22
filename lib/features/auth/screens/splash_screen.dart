@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigate() async {
     sessionC.checkSession();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(milliseconds: 1200), () {
       if (internetC.connectionStatus.value) {
         Get.offAll(() => DashBoard());
       }

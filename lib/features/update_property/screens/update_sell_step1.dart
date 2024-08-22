@@ -11,7 +11,7 @@ import 'package:habitat54/features/sell/widgets/sell_textfield.dart';
 import 'package:habitat54/features/update_property/controllers/update_sell_controller.dart';
 
 class UpdateSellStep1 extends StatelessWidget {
-   UpdateSellStep1({
+  UpdateSellStep1({
     super.key,
   });
   final sellC = Get.find<UpdateSellController>();
@@ -100,106 +100,96 @@ class UpdateSellStep1 extends StatelessWidget {
                       sellC.offerType.value = value!;
                     },
                   ),
-                  sellC.imagesList.isEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 190,
-                                child: MaterialButton(
-                                  onPressed: () async {
-                                    await sellC.getImagesFromGallery();
-                                  },
-                                  color: AppColors.grey,
-                                  height: 40,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.upload_file,
-                                        color: AppColors.white,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        'Upload Image',
-                                        style: AppTextStyle.mediumWhite14,
-                                      )
-                                    ],
-                                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 190,
+                          child: MaterialButton(
+                            onPressed: () async {
+                              await sellC.getImagesFromGallery();
+                            },
+                            color: AppColors.grey,
+                            height: 40,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.upload_file,
+                                  color: AppColors.white,
+                                  size: 20,
                                 ),
-                              ),
-                              sellC.step1Validate.value
-                                  ? sellC.imagesList.isEmpty &&
-                                          sellC.galleryImage.isEmpty
-                                      ? const Padding(
-                                          padding: EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            'Upload atleast 1 image',
-                                            style: TextStyle(
-                                                color: AppColors.primary),
-                                          ),
-                                        )
-                                      : const SizedBox()
-                                  : const SizedBox()
-                            ],
+                                const SizedBox(width: 5),
+                                Text(
+                                  'Upload Image',
+                                  style: AppTextStyle.mediumWhite14,
+                                )
+                              ],
+                            ),
                           ),
-                        )
-                      : const SizedBox(),
+                        ),
+                        sellC.step1Validate.value
+                            ? sellC.imagesList.isEmpty &&
+                                    sellC.galleryList.isEmpty
+                                ? const Padding(
+                                    padding: EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      'Upload atleast 1 image',
+                                      style:
+                                          TextStyle(color: AppColors.primary),
+                                    ),
+                                  )
+                                : const SizedBox()
+                            : const SizedBox()
+                      ],
+                    ),
+                  ),
                   Visibility(
-                    visible: sellC.imagesList.isNotEmpty ||
-                        sellC.galleryImage.isNotEmpty,
+                    visible: true,
                     child: SizedBox(
                       height: 120,
-                      child: Column(
-                        children: [
-                          sellC.imagesList.isNotEmpty
-                              ? Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 7, vertical: 10),
-                                  height: 70,
-                                  width: 70,
-                                  decoration: const BoxDecoration(
-                                    color: AppColors.grey,
-                                  ),
-                                  child: CachedNetworkImage(
-                                    imageUrl: sellC.imagesList.first,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        const Loader(),
-                                    errorWidget: (context, url, error) =>
-                                        const SizedBox(
-                                      width: double.infinity,
-                                      child: Icon(
-                                        Icons.error,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : sellC.galleryImage.isNotEmpty
-                                  ? Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 7, vertical: 10),
-                                      height: 70,
-                                      width: 70,
-                                      decoration: const BoxDecoration(
-                                        color: AppColors.grey,
-                                      ),
-                                      child: Image.file(
-                                        File(sellC.galleryImage.value),
+                      child: ListView.builder(
+                        itemCount: sellC.imagesList.isEmpty
+                            ? sellC.galleryList.length
+                            : sellC.imagesList.length,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 7),
+                                height: 70,
+                                width: 70,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.grey,
+                                ),
+                                child: sellC.galleryList.isNotEmpty
+                                    ? Image.file(
+                                        File(
+                                          sellC.galleryList[index],
+                                        ),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.network(
+                                        sellC.imagesList[index],
                                         fit: BoxFit.cover,
                                       ),
-                                    )
-                                  : const SizedBox(),
-                          const SizedBox(height: 5),
-                          GestureDetector(
-                              onTap: () {
-                                sellC.removeImageFromList();
-                              },
-                              child: const Icon(Icons.close))
-                        ],
+                              ),
+                              const SizedBox(height: 5),
+                              GestureDetector(
+                                onTap: () {
+                                  sellC.removeImageFromList(index);
+                                },
+                                child: const Icon(Icons.close),
+                              )
+                            ],
+                          );
+                        },
                       ),
                     ),
                   )

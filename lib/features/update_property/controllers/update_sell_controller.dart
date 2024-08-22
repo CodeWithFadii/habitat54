@@ -16,7 +16,7 @@ class UpdateSellController extends GetxController {
   RxBool isLoading = false.obs;
   RxInt pageIndex = 0.obs;
   RxList<String> imagesList = <String>[].obs;
-  RxString galleryImage = ''.obs;
+  RxList<String> galleryList = <String>[].obs;
   RxString galleryDocument = ''.obs;
   RxString document = ''.obs;
   RxList<String> featuresList = <String>[].obs;
@@ -82,10 +82,14 @@ class UpdateSellController extends GetxController {
       // Convert additionalDataJson to JSON string and add to request
 
       // Add image file if exists
-      if (imagesList.isEmpty) {
-        request.files.add(await http.MultipartFile.fromPath(
-            'upload_image', galleryImage.value.toString()));
+      if (galleryList.isNotEmpty) {
+        for (final imagePath in galleryList) {
+          log('Adding image: $imagePath');
+          request.files.add(
+              await http.MultipartFile.fromPath('upload_image[]', imagePath));
+        }
       }
+
       if (document.value.isEmpty && galleryDocument.isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
             'upload_document', galleryDocument.value.toString()));
@@ -121,7 +125,7 @@ class UpdateSellController extends GetxController {
     pageIndex.value = 0;
     propertyId.value = '';
     imagesList.clear();
-    galleryImage.value = '';
+    galleryList.clear();
     document.value = '';
     galleryDocument.value = '';
     featuresList.clear();
@@ -149,8 +153,9 @@ class UpdateSellController extends GetxController {
     pageIndex.value = 0;
     propertyId.value = property.id.toString();
     imagesList.clear();
-    imagesList.add(property.uploadImage!);
+    imagesList.addAll(property.uploadImage!);
     document.value = property.uploadDocument ?? '';
+    galleryList.clear();
     featuresList.clear();
     featuresList.addAll(features);
     // additionalFeaturesList.clear();
@@ -172,15 +177,17 @@ class UpdateSellController extends GetxController {
     // additionalFeaturesList.value = property.additional;
     additionalFeatureNameC.clear();
     additionalFeatureValueC.clear();
-    
+
     Get.to(() => const UpdateSellScreen());
   }
 
   Future<void> getImagesFromGallery() async {
-    final pic = await pickImage();
+    final pic = await pickMultipleImages();
     if (pic != null) {
       imagesList.clear();
-      galleryImage.value = pic.path;
+      for (var i in pic) {
+        galleryList.add(i.path);
+      }
     }
   }
 
@@ -192,9 +199,13 @@ class UpdateSellController extends GetxController {
     }
   }
 
-  void removeImageFromList() {
-    imagesList.clear();
-    galleryImage.value = '';
+  void removeImageFromList(int index) {
+    if (galleryList.isNotEmpty) {
+      galleryList.removeAt(index);
+    }
+    if (imagesList.isNotEmpty) {
+      imagesList.removeAt(index);
+    }
   }
 
   void addFeature(String feature) {
@@ -234,8 +245,9 @@ class UpdateSellController extends GetxController {
     if (titleC.value.text.isNotEmpty &&
             priceC.value.text.isNotEmpty &&
             propertyType.isNotEmpty &&
-            imagesList.isNotEmpty ||
-        galleryImage.isNotEmpty) {
+            galleryList.isNotEmpty ||
+        imagesList.isNotEmpty) {
+    
       pageIndex(pageIndex.value + 1);
       step1Validate.value = false;
     }

@@ -45,7 +45,6 @@ class SellController extends GetxController {
     final url = Uri.parse('${AppConstants.baseUrl}add_products');
     final profileC = Get.put(ProfileController());
     try {
-      // Create multipart request
       isLoading(true);
       final request = http.MultipartRequest('POST', url);
 
@@ -64,34 +63,29 @@ class SellController extends GetxController {
       request.fields['bedrooms'] = bedroomsC.text.toString();
       request.fields['bathrooms'] = bathroomsC.text.toString();
       request.fields['vedio'] = youtubeLink.text.toString();
-
       request.fields['features'] = featuresList.toString();
-      // jsonEncode(featuresList.map((feature) => feature).toList());
-
       request.fields['additional_data'] =
           jsonEncode(additionalFeatures.map((feature) => feature).toList());
 
-      // Convert additionalDataJson to JSON string and add to request
-
-      // Add image file if exists
+      // Add image files if exist
       if (imagesList.isNotEmpty) {
-        request.files.add(await http.MultipartFile.fromPath(
-            'upload_image', imagesList[0].toString()));
+        for (final imagePath in imagesList) {
+          log('Adding image: $imagePath'); // Log the image paths being added
+          request.files.add(
+              await http.MultipartFile.fromPath('upload_image[]', imagePath));
+        }
       }
+
+      // Add document file if exists
       if (document.value.isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
             'upload_document', document.value.toString()));
       }
 
-      // Define headers
-      request.headers.addAll({
-        'Content-Type': 'multipart/form-data',
-      });
-
       // Send the request
-
       final response = await request.send();
       isLoading(false);
+
       // Handle the response
       if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
@@ -101,21 +95,19 @@ class SellController extends GetxController {
         payment.value = false;
         Get.to(() => const MyPropertiesScreen(isRefresh: true));
         showCustomSnackbar('Property Uploaded');
-
-        isLoading(false);
       } else if (response.statusCode == 500) {
         payment.value = false;
+        log(response.statusCode.toString());
         showCustomSnackbar('Property Uploaded');
         updateValues();
         Get.to(() => const MyPropertiesScreen(isRefresh: true));
       } else {
-        // final responseBody = await response.stream.bytesToString();
         log('HTTP Error: ${response.statusCode}');
         showCustomSnackbar('Something went wrong while posting');
-        isLoading(false);
       }
     } catch (e) {
       log('Exception: $e');
+    } finally {
       isLoading(false);
     }
   }
@@ -169,9 +161,11 @@ class SellController extends GetxController {
   }
 
   Future<void> getImagesFromGallery() async {
-    final pic = await pickImage();
-    if (pic != null) {
-      imagesList.add(pic.path);
+    final picList = await pickMultipleImages();
+    if (picList != null) {
+      for (var i in picList) {
+        imagesList.add(i.path);
+      }
     }
   }
 
@@ -182,8 +176,8 @@ class SellController extends GetxController {
     }
   }
 
-  void removeImageFromList() {
-    imagesList.removeAt(0);
+  void removeImageFromList(int index) {
+    imagesList.removeAt(index);
   }
 
   void addFeature(String feature) {

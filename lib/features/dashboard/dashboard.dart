@@ -34,9 +34,9 @@ class DashBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (index != null) {
-      dashboardC.index.value = 3;
-    }
+    // if (index != null) {
+    //   dashboardC.index.value = 3;
+    // }
     return Obx(() {
       return Scaffold(
         resizeToAvoidBottomInset: false,

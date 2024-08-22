@@ -83,8 +83,8 @@ class RecommendedDetailScreen extends StatelessWidget {
                         CachedNetworkImage(
                           width: double.infinity,
                           height: 230,
-                          imageUrl: property.uploadImage!.isNotEmpty
-                              ? property.uploadImage!
+                          imageUrl: property.uploadImage![0].isNotEmpty
+                              ? property.uploadImage![0]
                               : exampleImage,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => const Loader(),

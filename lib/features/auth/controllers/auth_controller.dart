@@ -35,6 +35,8 @@ class AuthController extends GetxController {
 
   Future signInWithGoogle({required bool login}) async {
     try {
+      await googleSignIn.signOut();
+      await FirebaseAuth.instance.signOut();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         return null;
@@ -57,9 +59,9 @@ class AuthController extends GetxController {
         }
       }
       isLoading(false);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       isLoading(false);
-      showCustomSnackbar('Something went wrong please try again ${e.message}');
+      showCustomSnackbar('Something went wrong please try again');
       return null;
     } catch (e) {
       isLoading(false);
@@ -126,8 +128,7 @@ class AuthController extends GetxController {
         isLoading(false);
       } else {
         isLoading(false);
-        showCustomSnackbar(
-            'Try again with a different method');
+        showCustomSnackbar('Try again with a different method');
       }
     } catch (e) {
       isLoading(false);
@@ -137,7 +138,7 @@ class AuthController extends GetxController {
 
   Future<void> socielLogin(User user) async {
     final url = Uri.parse('${AppConstants.baseUrl}social_login');
-  
+
     final Map<String, dynamic> requestBody = {
       'image': user.photoURL,
       'name': user.displayName,
@@ -166,8 +167,7 @@ class AuthController extends GetxController {
         isLoading(false);
       } else {
         isLoading(false);
-        showCustomSnackbar(
-            'Something went wrong please again! ${response.body}');
+        showCustomSnackbar('Email registerd with another method');
       }
     } catch (e) {
       isLoading(false);

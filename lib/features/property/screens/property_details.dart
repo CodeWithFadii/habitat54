@@ -19,7 +19,6 @@ class PropertyDetails extends StatelessWidget {
       {super.key, this.userProperty = false, required this.property});
   final bool? userProperty;
   final Property property;
-
   final exampleImage =
       'https://habitat54.com/wp-content/uploads/2024/05/0-2.jpeg';
 
@@ -60,7 +59,7 @@ class PropertyDetails extends StatelessWidget {
               SizedBox(
                 height: 230,
                 child: PageView.builder(
-                  itemCount: 1,
+                  itemCount: property.uploadImage!.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return Stack(
@@ -69,8 +68,8 @@ class PropertyDetails extends StatelessWidget {
                         CachedNetworkImage(
                           width: double.infinity,
                           height: 230,
-                          imageUrl: property.uploadImage!.isNotEmpty
-                              ? property.uploadImage!
+                          imageUrl: property.uploadImage![0].isNotEmpty
+                              ? property.uploadImage![index]
                               : exampleImage,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => const Loader(),
@@ -98,6 +97,19 @@ class PropertyDetails extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            color: const Color.fromARGB(87, 0, 0, 0),
+                            child: Text(
+                              '${index + 1}/${property.uploadImage!.length}',
+                              style: AppTextStyle.mediumWhite14,
+                            ),
+                          ),
                         ),
                       ],
                     );

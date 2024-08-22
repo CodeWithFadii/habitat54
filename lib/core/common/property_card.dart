@@ -46,8 +46,8 @@ class PropertyCard extends StatelessWidget {
                       CachedNetworkImage(
                         height: 200,
                         width: double.infinity,
-                        imageUrl: property.uploadImage!.isNotEmpty
-                            ? property.uploadImage!
+                        imageUrl: property.uploadImage![0].isNotEmpty
+                            ? property.uploadImage![0]
                             : exampleImage,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Loader(),
