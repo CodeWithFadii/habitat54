@@ -9,13 +9,14 @@ import 'package:habitat54/features/auth/screens/splash_screen.dart';
 import 'package:habitat54/firebase_options.dart';
 
 void main() async {
-  await dotenv.load(fileName: 'assets/.env');
-  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY']!;
-  await Stripe.instance.applySettings();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'habitat54-1a4c8',
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: 'assets/.env');
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY']!;
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 

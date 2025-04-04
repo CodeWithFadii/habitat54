@@ -40,8 +40,7 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Login',
-                            style: AppTextStyle.boldBlack30.copyWith(
-                                fontSize: 36, fontWeight: FontWeight.w900),
+                            style: AppTextStyle.boldBlack30.copyWith(fontSize: 36, fontWeight: FontWeight.w900),
                           ),
                           Column(
                             children: [
@@ -61,17 +60,12 @@ class LoginScreen extends StatelessWidget {
                                 obscureText: authC.hidePassword.value,
                                 formKey: passwordFormKey,
                                 text: 'Password',
-                                trailing: authC.hidePassword.value
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                                trailing: authC.hidePassword.value ? Icons.visibility_off : Icons.visibility,
                                 trailingTap: () {
-                                  authC.hidePassword.value
-                                      ? authC.hidePassword(false)
-                                      : authC.hidePassword(true);
+                                  authC.hidePassword.value ? authC.hidePassword(false) : authC.hidePassword(true);
                                 },
                                 validator: (value) {
-                                  String? error =
-                                      authC.passwordValidator(value);
+                                  String? error = authC.passwordValidator(value);
                                   return error;
                                 },
                               ),
@@ -81,14 +75,12 @@ class LoginScreen extends StatelessWidget {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      authC.forgetPasswordC.text =
-                                          authC.loginEmailC.text;
+                                      authC.forgetPasswordC.text = authC.loginEmailC.text;
                                       Get.to(() => ForgetPasswordScreen());
                                     },
                                     child: Text(
                                       'Forgot Password?',
-                                      style: AppTextStyle.mediumBlack14
-                                          .copyWith(color: AppColors.primary),
+                                      style: AppTextStyle.mediumBlack14.copyWith(color: AppColors.primary),
                                     ),
                                   ),
                                 ],
@@ -102,21 +94,20 @@ class LoginScreen extends StatelessWidget {
                                 text: 'Login',
                                 onPressed: () {
                                   if (emailFormKey.currentState!.validate() &&
-                                      passwordFormKey.currentState!
-                                          .validate()) {
+                                      passwordFormKey.currentState!.validate()) {
                                     authC.loginUser();
                                   }
                                 },
                               ),
-                              AuthSocielButton(
-                                google: () async{
-                                  await GoogleSignIn().signOut();
-                                  authC.signInWithGoogle(login: true);
-                                },
-                                // facebook: () {
-                                //   authC.signInWithFacebook(login: true);
-                                // },
-                              ),
+                              // AuthSocielButton(
+                              //   google: () async{
+                              //     await GoogleSignIn().signOut();
+                              //     authC.signInWithGoogle(login: true);
+                              //   },
+                              //   // facebook: () {
+                              //   //   authC.signInWithFacebook(login: true);
+                              //   // },
+                              // ),
                               const SizedBox(height: 15),
                               LongButton(
                                 textColor: AppColors.black,

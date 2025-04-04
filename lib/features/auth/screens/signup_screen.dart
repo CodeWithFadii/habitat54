@@ -44,8 +44,7 @@ class SignupScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
                                 'Sign Up',
-                                style: AppTextStyle.boldBlack30.copyWith(
-                                    fontSize: 36, fontWeight: FontWeight.w900),
+                                style: AppTextStyle.boldBlack30.copyWith(fontSize: 36, fontWeight: FontWeight.w900),
                               ),
                             ),
                             Padding(
@@ -58,8 +57,7 @@ class SignupScreen extends StatelessWidget {
                                     text: 'Name',
                                     leadingIcon: Icons.person_outline,
                                     validator: (value) {
-                                      String? error =
-                                          authC.nameValidator(value);
+                                      String? error = authC.nameValidator(value);
                                       return error;
                                     },
                                   ),
@@ -70,8 +68,7 @@ class SignupScreen extends StatelessWidget {
                                     text: 'Phone',
                                     leadingIcon: Icons.phone_outlined,
                                     validator: (value) {
-                                      String? error =
-                                          authC.phoneValidator(value);
+                                      String? error = authC.phoneValidator(value);
                                       return error;
                                     },
                                   ),
@@ -81,8 +78,7 @@ class SignupScreen extends StatelessWidget {
                                     formKey: emailFormKey,
                                     leadingIcon: Icons.email_outlined,
                                     validator: (value) {
-                                      String? error =
-                                          authC.emailValidator(value);
+                                      String? error = authC.emailValidator(value);
                                       return error;
                                     },
                                   ),
@@ -92,33 +88,25 @@ class SignupScreen extends StatelessWidget {
                                     obscureText: authC.hidePassword.value,
                                     formKey: passwordFormKey,
                                     text: 'Password',
-                                    trailing: authC.hidePassword.value
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
+                                    trailing: authC.hidePassword.value ? Icons.visibility_off : Icons.visibility,
                                     trailingTap: () {
-                                      authC.hidePassword.value
-                                          ? authC.hidePassword(false)
-                                          : authC.hidePassword(true);
+                                      authC.hidePassword.value ? authC.hidePassword(false) : authC.hidePassword(true);
                                     },
                                     validator: (value) {
-                                      String? error =
-                                          authC.passwordValidator(value);
+                                      String? error = authC.passwordValidator(value);
                                       return error;
                                     },
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 40, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(left: 40, top: 20, bottom: 10),
                                     child: DropdownButton<String>(
                                       hint: const Text(
                                         'Agent',
                                         style: TextStyle(color: AppColors.grey),
                                       ),
                                       style: AppTextStyle.mediumBlack16,
-                                      value: authC.role
-                                          .value, // Currently selected item
-                                      isExpanded:
-                                          true, // Make the dropdown button expand to full width
+                                      value: authC.role.value, // Currently selected item
+                                      isExpanded: true, // Make the dropdown button expand to full width
                                       dropdownColor: Colors.white,
                                       underline: const Divider(
                                         height: 1,
@@ -129,13 +117,11 @@ class SignupScreen extends StatelessWidget {
                                         authC.role.value = newValue!;
                                       },
 
-                                      items: ['Agent', 'Agency', 'Buyer']
-                                          .map((String item) {
+                                      items: ['Agent', 'Agency', 'Buyer'].map((String item) {
                                         return DropdownMenuItem<String>(
                                           value: item,
                                           child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 5),
+                                            padding: const EdgeInsets.only(left: 5),
                                             child: Text(item),
                                           ),
                                         );
@@ -154,21 +140,20 @@ class SignupScreen extends StatelessWidget {
                                     if (nameFormKey.currentState!.validate() &&
                                         phoneFormKey.currentState!.validate() &&
                                         emailFormKey.currentState!.validate() &&
-                                        passwordFormKey.currentState!
-                                            .validate()) {
+                                        passwordFormKey.currentState!.validate()) {
                                       authC.signupUser();
                                     }
                                   },
                                 ),
-                                AuthSocielButton(
-                                  google: () async {
-                                    await GoogleSignIn().signOut();
-                                    authC.signInWithGoogle(login: false);
-                                  },
-                                  // facebook: () {
-                                  //   authC.signInWithFacebook(login: false);
-                                  // },
-                                ),
+                                // AuthSocielButton(
+                                //   google: () async {
+                                //     await GoogleSignIn().signOut();
+                                //     authC.signInWithGoogle(login: false);
+                                //   },
+                                //   // facebook: () {
+                                //   //   authC.signInWithFacebook(login: false);
+                                //   // },
+                                // ),
                                 const SizedBox(height: 15),
                                 LongButton(
                                   textColor: AppColors.black,

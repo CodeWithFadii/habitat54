@@ -41,15 +41,13 @@ class AuthController extends GetxController {
       if (googleUser == null) {
         return null;
       }
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       isLoading(true);
-      final UserCredential userCredential =
-          await auth.signInWithCredential(credential);
+      final UserCredential userCredential = await auth.signInWithCredential(credential);
       final user = userCredential.user;
       if (user != null) {
         if (login) {
@@ -65,7 +63,7 @@ class AuthController extends GetxController {
       return null;
     } catch (e) {
       isLoading(false);
-      showCustomSnackbar('Something went wrong please try again}');
+      showCustomSnackbar('Something went wrong please try again ${e.toString()}');
       return null;
     }
   }
@@ -76,11 +74,9 @@ class AuthController extends GetxController {
 
       if (result.status == LoginStatus.success) {
         isLoading(true);
-        final OAuthCredential credential =
-            FacebookAuthProvider.credential(result.accessToken!.tokenString);
+        final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
 
-        UserCredential userCredential =
-            await auth.signInWithCredential(credential);
+        UserCredential userCredential = await auth.signInWithCredential(credential);
         final user = userCredential.user;
         if (user != null) {
           if (login) {
@@ -93,8 +89,7 @@ class AuthController extends GetxController {
       }
     } on Exception catch (e) {
       isLoading(false);
-      showCustomSnackbar(
-          'Something went wrong please try again ${e.toString()}');
+      showCustomSnackbar('Something went wrong please try again ${e.toString()}');
     }
   }
 
@@ -377,9 +372,7 @@ class AuthController extends GetxController {
     if (email!.isEmpty) {
       return 'This field in required';
     }
-    final emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
+    final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
     if (!emailValid) {
       return 'Please enter valid email adress';
     }

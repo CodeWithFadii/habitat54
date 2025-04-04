@@ -117,7 +117,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchCity() async {
-    final url = Uri.parse('https://app.webaotoolkit.com/api/city');
+    final url = Uri.parse('${AppConstants.baseUrl}city');
 
     try {
       final response = await http.get(url);
@@ -128,8 +128,7 @@ class HomeController extends GetxController {
 
         // Extract names and cast to List<String>
         List<dynamic> cityData = data['city'];
-        List<String> names =
-            cityData.map((city) => city['name'].toString()).toList();
+        List<String> names = cityData.map((city) => city['name'].toString()).toList();
 
         // Update state with names
         cityList.addAll(names);
@@ -143,7 +142,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchNeighborhood() async {
-    final url = Uri.parse('https://app.webaotoolkit.com/api/neighborhood');
+    final url = Uri.parse('${AppConstants.baseUrl}neighborhood');
 
     try {
       final response = await http.get(url);
@@ -154,9 +153,7 @@ class HomeController extends GetxController {
 
         // Extract names
         List<dynamic> neighborhoodData = data['neighborhood'];
-        List<String> names = neighborhoodData
-            .map((neighbor) => neighbor['name'].toString())
-            .toList();
+        List<String> names = neighborhoodData.map((neighbor) => neighbor['name'].toString()).toList();
 
         neighborhoodList.addAll(names);
         // log(neighborhoodList.toString());
@@ -201,51 +198,37 @@ class HomeController extends GetxController {
     ////////////////////////////////
     if (neighborhood.value.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.nieghborhood!.isEmpty
-            ? false
-            : data.nieghborhood == neighborhood.value;
+        return data.nieghborhood!.isEmpty ? false : data.nieghborhood == neighborhood.value;
       }).toList();
     }
     if (bedroomsFrom.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.bedrooms!.isEmpty
-            ? false
-            : int.parse(data.bedrooms!) > int.parse(bedroomsFrom.text);
+        return data.bedrooms!.isEmpty ? false : int.parse(data.bedrooms!) > int.parse(bedroomsFrom.text);
       }).toList();
     }
     if (bedroomsTo.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.bedrooms!.isEmpty
-            ? false
-            : int.parse(data.bedrooms!) < int.parse(bedroomsTo.text);
+        return data.bedrooms!.isEmpty ? false : int.parse(data.bedrooms!) < int.parse(bedroomsTo.text);
       }).toList();
     }
     if (bathroomsFrom.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.bathrooms!.isEmpty
-            ? false
-            : int.parse(data.bathrooms!) > int.parse(bathroomsFrom.text);
+        return data.bathrooms!.isEmpty ? false : int.parse(data.bathrooms!) > int.parse(bathroomsFrom.text);
       }).toList();
     }
     if (bathroomsTo.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.bathrooms!.isEmpty
-            ? false
-            : int.parse(data.bathrooms!) < int.parse(bathroomsTo.text);
+        return data.bathrooms!.isEmpty ? false : int.parse(data.bathrooms!) < int.parse(bathroomsTo.text);
       }).toList();
     }
     if (propertySizeFrom.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.propertySize!.isEmpty
-            ? false
-            : int.parse(data.propertySize!) > int.parse(propertySizeFrom.text);
+        return data.propertySize!.isEmpty ? false : int.parse(data.propertySize!) > int.parse(propertySizeFrom.text);
       }).toList();
     }
     if (propertySizeTo.text.isNotEmpty) {
       filteredList.value = filteredList.where((data) {
-        return data.propertySize!.isEmpty
-            ? false
-            : int.parse(data.propertySize!) < int.parse(propertySizeTo.text);
+        return data.propertySize!.isEmpty ? false : int.parse(data.propertySize!) < int.parse(propertySizeTo.text);
       }).toList();
     }
     if (featuresList.isNotEmpty) {
@@ -254,8 +237,7 @@ class HomeController extends GetxController {
         List<String> propertyFeatures = parseDataString(data);
 
         // Check if the property features contain all of the user selections
-        return featuresList
-            .every((feature) => propertyFeatures.contains(feature));
+        return featuresList.every((feature) => propertyFeatures.contains(feature));
       }).toList();
     }
   }

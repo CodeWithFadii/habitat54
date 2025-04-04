@@ -8,7 +8,7 @@ class AppConstants {
   static const String google = 'assets/icons/google.png';
   static const String facebook = 'assets/icons/facebook.png';
   static const String userID = 'id';
-  static const String baseUrl = 'https://app.webaotoolkit.com/api/';
+  static const String baseUrl = 'https://app.ifdot.shop/api/';
   static const String isUserLoggedIn = 'isUserLoggedIn';
   static const String isVarified = 'isVarified';
   static const String sociel = 'sociel';

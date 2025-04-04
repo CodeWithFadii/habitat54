@@ -70,7 +70,7 @@ class Property {
 
     return Property(
       id: json['id'],
-      userId: json['user_id'],
+      userId: json['user_id'].toString(),
       name: json['name'] ?? '',
       number: json['number'],
       title: json['title'] ?? '',
@@ -84,17 +84,13 @@ class Property {
       bedrooms: json['bedrooms'] ?? '',
       bathrooms: json['bathrooms'] ?? '',
       propertySize: json['property_size'] ?? '',
-      features: json['features'] != []
-          ? [jsonDecode(json['features']).toString()]
-          : [],
+      features: json['features'] != [] ? [jsonDecode(json['features']).toString()] : [],
       vedio: json['vedio'] ?? '',
       uploadDocument: json['upload_document'] ?? '',
       createdAt: formatDate(),
       updatedAt: DateTime.parse(json['updated_at']),
       additional: json['additional'] != null
-          ? (json['additional'] as List<dynamic>)
-              .map((item) => Additional.fromJson(item))
-              .toList()
+          ? (json['additional'] as List<dynamic>).map((item) => Additional.fromJson(item)).toList()
           : [],
       status: json['status'],
     );
